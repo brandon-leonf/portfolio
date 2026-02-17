@@ -19,6 +19,7 @@
   color: var(--primary-text);
   position: relative;
   overflow: hidden;
+  display: flex;
 }
 
 .page::before {
@@ -36,6 +37,7 @@
   display: grid;
   grid-template-columns: minmax(260px, 320px) 1fr;
   gap: 64px;
+  height: 100vh;
 }
 
 .left {
@@ -179,6 +181,9 @@
   gap: 24px;
   border-left: 1px solid #d4d4d8;
   padding-left: clamp(28px, 4vw, 64px);
+  overflow-y: auto;
+  max-height: calc(100vh - 64px - 96px);
+  padding-right: 8px;
 }
 
 .section-header {
@@ -470,10 +475,17 @@
   .resume {
     grid-template-columns: 1fr;
     padding: 64px 32px 72px;
+    height: auto;
   }
 
   .left {
     position: static;
+    padding-right: 0;
+  }
+
+  .right {
+    max-height: none;
+    overflow: visible;
     padding-right: 0;
   }
 
