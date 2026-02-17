@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Rajdhani:wght@400;600;700&display=swap");
+
+:root {
+  font-family: "Manrope", system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Rajdhani", "Manrope", sans-serif;
+  margin: 0 0 16px;
+  color: #050505;
+}
+
+h1 {
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+h2 {
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+h3 {
+  font-size: 36px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+h4 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+h5 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+h6 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+p {
+  margin: 0 0 16px;
+}
+
+a {
+  color: inherit;
+}
