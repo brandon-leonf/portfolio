@@ -3,724 +3,27 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Brandon Flores — Cloud Engineering Portfolio</title>
-<meta name="description" content="Cloud engineering portfolio focused on AWS networking and security. Private by default, observable end to end, resilient." />
+<title>Brandon Leon Flores | Information Technology Student</title>
+<meta name="description" content="Portfolio of Brandon Leon Flores, an NJIT Information Technology student building practical web systems for real business problems." />
+<meta name="author" content="Brandon Leon Flores" />
+<link rel="canonical" href="https://bleonflores1.com/" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://bleonflores1.com/" />
+<meta property="og:title" content="Brandon Leon Flores | Information Technology Student" />
+<meta property="og:description" content="Portfolio of Brandon Leon Flores, an NJIT Information Technology student building practical web systems for real business problems." />
+<meta property="og:image" content="https://bleonflores1.com/assets/hero-portrait.jpg" />
+<meta property="og:image:alt" content="Portrait of Brandon Leon Flores" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Brandon Leon Flores | Information Technology Student" />
+<meta name="twitter:description" content="Portfolio of Brandon Leon Flores, an NJIT Information Technology student building practical web systems for real business problems." />
+<meta name="twitter:image" content="https://bleonflores1.com/assets/hero-portrait.jpg" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230d1117'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' font-family='Arial' font-weight='700' fill='%23d4a24a'%3EBL%3C/text%3E%3C/svg%3E" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:ital,wght@0,100;0,400;0,500;0,600;1,100;1,400&display=swap" rel="stylesheet" />
 
-<style>
-  :root {
-    /* Guardian × Sage palette — deep, defensive, observant */
-    --bg-base: #0d1117;
-    --bg-panel: #131a22;
-    --bg-elev: #1a232e;
-    --bg-deep: #080c11;
-
-    --line: #1f2a37;
-    --line-strong: #2d3a4a;
-
-    --ink: #e6edf3;
-    --ink-mute: #8b97a8;
-    --ink-dim: #5a6473;
-
-    /* Signals — sage = trusted state, amber = attention/observability */
-    --sage: #7ab692;
-    --sage-deep: #4a8a66;
-    --amber: #d4a24a;
-    --amber-deep: #a8782e;
-    --alert: #c66b5e;
-
-    --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-    --serif: 'Space Grotesk', system-ui, sans-serif;
-    --sans: 'Inter', system-ui, sans-serif;
-
-    --maxw: 1180px;
-    --pad: clamp(1.25rem, 4vw, 3rem);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg-base);
-    color: var(--ink);
-    font-family: var(--sans);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
-
-  /* Subtle scanline / grid texture across the page */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 64px 64px;
-    opacity: 0.18;
-    pointer-events: none;
-    z-index: 0;
-    mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%);
-  }
-
-  ::selection { background: var(--amber); color: var(--bg-base); }
-
-  /* ─────────── Top status bar ─────────── */
-  .statusbar {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(8, 12, 17, 0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--line);
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-  }
-  .statusbar-inner {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    padding: 0.55rem var(--pad);
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    justify-content: space-between;
-    color: var(--ink-mute);
-  }
-  .statusbar .left { display: flex; gap: 1.5rem; align-items: center; }
-  .statusbar .right { display: flex; gap: 1.5rem; align-items: center; }
-  .dot {
-    display: inline-block;
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--sage);
-    margin-right: 0.5rem;
-    box-shadow: 0 0 8px var(--sage);
-    animation: pulse 2.4s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
-  .stat-hide-mobile { }
-  @media (max-width: 720px) {
-    .stat-hide-mobile { display: none; }
-  }
-
-  /* ─────────── Nav ─────────── */
-  nav.primary {
-    position: sticky; top: 32px; z-index: 49;
-    background: rgba(13, 17, 23, 0.92);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line);
-  }
-  .nav-inner {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    padding: 1rem var(--pad);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-  }
-  .brand {
-    font-family: var(--mono);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    color: var(--ink);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-  .brand::before {
-    content: '◢';
-    color: var(--amber);
-    font-size: 0.9rem;
-  }
-  .nav-links {
-    display: flex;
-    gap: clamp(1rem, 3vw, 2.4rem);
-    list-style: none;
-  }
-  .nav-links a {
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    color: var(--ink-mute);
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: color 0.2s;
-    position: relative;
-    padding: 0.3rem 0;
-  }
-  .nav-links a:hover { color: var(--amber); }
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -2px; left: 0;
-    width: 0; height: 1px;
-    background: var(--amber);
-    transition: width 0.25s;
-  }
-  .nav-links a:hover::after { width: 100%; }
-
-  .hamburger {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--ink);
-    cursor: pointer;
-    padding: 0.25rem;
-    line-height: 0;
-  }
-
-  @media (max-width: 820px) {
-    .hamburger { display: flex; align-items: center; }
-
-    .nav-links {
-      display: none;
-      flex-direction: column;
-      gap: 0;
-      position: absolute;
-      top: 100%;
-      left: 0; right: 0;
-      background: rgba(8, 12, 17, 0.97);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
-      padding: 0.5rem 0;
-      z-index: 48;
-    }
-
-    .nav-links.open { display: flex; }
-
-    .nav-links li { border-top: 1px solid var(--line); }
-
-    .nav-links a {
-      display: block;
-      padding: 0.9rem var(--pad);
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-    }
-
-    .nav-links a::after { display: none; }
-  }
-
-  /* ─────────── Section base ─────────── */
-  main { position: relative; z-index: 1; }
-  section {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    padding: clamp(4rem, 10vh, 8rem) var(--pad);
-    border-bottom: 1px solid var(--line);
-  }
-  section:last-of-type { border-bottom: none; }
-
-  .eyebrow {
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--amber);
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-  }
-  .eyebrow::before {
-    content: '';
-    width: 24px; height: 1px;
-    background: var(--amber);
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', system-ui, sans-serif;
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-
-  h1 { font-weight: 800; }
-
-  p {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-weight: 400;
-  }
-
-  em {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-style: italic;
-    font-weight: 100;
-  }
-
-  /* ─────────── Hero / Thesis ─────────── */
-  #thesis {
-    padding-top: clamp(3rem, 8vh, 6rem);
-    padding-bottom: clamp(4rem, 10vh, 7rem);
-    position: relative;
-  }
-
-  .thesis-content {
-    max-width: 78%;
-  }
-
-  #cloud-canvas {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 400px;
-    height: 1000px;
-    pointer-events: none;
-    display: block;
-  }
-
-  @media (max-width: 820px) {
-    .thesis-content { max-width: 100%; }
-    #cloud-canvas { display: none; }
-  }
-  .hero-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem 2rem;
-    margin-bottom: 2.5rem;
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    color: var(--ink-mute);
-    text-transform: uppercase;
-  }
-  .hero-meta span { display: flex; align-items: center; gap: 0.5rem; }
-  .hero-meta .tick { color: var(--sage); }
-
-  h1.thesis {
-    font-size: clamp(2rem, 5.2vw, 3.6rem);
-    max-width: 22ch;
-    margin-bottom: 2rem;
-  }
-  h1.thesis em {
-    font-style: italic;
-    color: var(--amber);
-    font-weight: 400;
-  }
-
-  .hero-sub {
-    font-size: clamp(1rem, 1.4vw, 1.1rem);
-    color: var(--ink-mute);
-    max-width: 58ch;
-    margin-bottom: 3rem;
-  }
-
-  .signal-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem 1.5rem;
-    align-items: center;
-    margin-bottom: 3rem;
-    padding: 1.2rem 1.4rem;
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    border-left: 2px solid var(--amber);
-    font-family: var(--mono);
-    font-size: 0.78rem;
-  }
-  .signal-row .label {
-    color: var(--ink-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    font-size: 0.68rem;
-  }
-  .signal-row .value { color: var(--ink); }
-  .signal-row .archetype {
-    color: var(--sage);
-    font-weight: 600;
-  }
-
-  .cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.7rem;
-    padding: 0.85rem 1.5rem;
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: 1px solid var(--line-strong);
-    color: var(--ink);
-    background: var(--bg-panel);
-    transition: all 0.2s;
-    cursor: pointer;
-  }
-  .btn:hover {
-    background: var(--amber);
-    color: var(--bg-base);
-    border-color: var(--amber);
-  }
-  .btn-primary {
-    background: var(--amber);
-    color: var(--bg-base);
-    border-color: var(--amber);
-  }
-  .btn-primary:hover {
-    background: transparent;
-    color: var(--amber);
-  }
-  .btn::after { content: '→'; transition: transform 0.2s; }
-  .btn:hover::after { transform: translateX(3px); }
-
-  /* Stat cluster under hero */
-  .stats {
-    margin-top: 4rem;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border: 1px solid var(--line);
-    background: var(--bg-deep);
-  }
-  .stat {
-    padding: 2rem 1.5rem;
-    border-right: 1px solid var(--line);
-  }
-  .stat:last-child { border-right: none; }
-  .stat-num {
-    font-family: var(--serif);
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    font-weight: 500;
-    color: var(--amber);
-    margin-bottom: 0.4rem;
-    line-height: 1;
-  }
-  .stat-label {
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    color: var(--ink-mute);
-    line-height: 1.5;
-    letter-spacing: 0.04em;
-  }
-  @media (max-width: 720px) {
-    .stats { grid-template-columns: 1fr; }
-    .stat { border-right: none; border-bottom: 1px solid var(--line); }
-    .stat:last-child { border-bottom: none; }
-  }
-
-  /* ─────────── Section heads ─────────── */
-  h2.section-title {
-    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-    max-width: 24ch;
-    margin-bottom: 2.5rem;
-  }
-
-  /* ─────────── Trajectory (operating model) ─────────── */
-  .traj-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-    margin-top: 1rem;
-  }
-  .traj-cell {
-    background: var(--bg-base);
-    padding: 2rem 1.6rem;
-    transition: background 0.2s;
-  }
-  .traj-cell:hover { background: var(--bg-panel); }
-  .traj-num {
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    color: var(--amber);
-    letter-spacing: 0.15em;
-    margin-bottom: 1rem;
-  }
-  .traj-cell h3 {
-    font-size: 1.15rem;
-    margin-bottom: 0.7rem;
-    color: var(--ink);
-  }
-  .traj-cell p {
-    color: var(--ink-mute);
-    font-size: 0.92rem;
-    line-height: 1.6;
-  }
-  @media (max-width: 820px) {
-    .traj-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ─────────── Curriculum (skills) ─────────── */
-  .curr-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-top: 1rem;
-  }
-  .curr-card {
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    padding: 1.8rem 1.6rem;
-    position: relative;
-  }
-  .curr-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 32px; height: 1px;
-    background: var(--amber);
-  }
-  .curr-card h3 {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--amber);
-    margin-bottom: 1rem;
-  }
-  .curr-card ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  .curr-card li {
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    padding: 0.35rem 0.7rem;
-    background: var(--bg-elev);
-    border: 1px solid var(--line-strong);
-    color: var(--ink);
-  }
-  .curr-card.cert {
-    grid-column: 1 / -1;
-    background: var(--bg-deep);
-    border-left: 2px solid var(--sage);
-  }
-  .curr-card.cert::before { background: var(--sage); }
-  .cert-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    font-family: var(--mono);
-    font-size: 0.85rem;
-  }
-  .cert-row .item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--ink);
-  }
-  .cert-row .arrow { color: var(--ink-dim); }
-  .cert-status {
-    margin-left: auto;
-    font-size: 0.7rem;
-    color: var(--sage);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .cert-status::before {
-    content: '●';
-    margin-right: 0.4rem;
-    animation: pulse 2.4s infinite;
-  }
-  @media (max-width: 720px) {
-    .curr-grid { grid-template-columns: 1fr; }
-    .cert-status { margin-left: 0; }
-  }
-
-  /* ─────────── Projects ─────────── */
-  .proj-intro {
-    color: var(--ink-mute);
-    max-width: 56ch;
-    margin-bottom: 3rem;
-    font-size: 1.05rem;
-  }
-  .proj {
-    display: grid;
-    grid-template-columns: 1fr 1.3fr;
-    gap: 2.5rem;
-    padding: 2.5rem 0;
-    border-top: 1px solid var(--line);
-  }
-  .proj:last-of-type { border-bottom: 1px solid var(--line); }
-  .proj-visual {
-    background: var(--bg-deep);
-    border: 1px solid var(--line);
-    aspect-ratio: 4 / 3;
-    position: relative;
-    overflow: hidden;
-  }
-  .proj-visual svg { width: 100%; height: 100%; display: block; }
-
-  .proj-meta {
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--ink-dim);
-    margin-bottom: 0.8rem;
-  }
-  .proj h3 {
-    font-size: clamp(1.3rem, 2.2vw, 1.7rem);
-    margin-bottom: 1.2rem;
-  }
-  .proj-block {
-    margin-bottom: 1.2rem;
-  }
-  .proj-block .lbl {
-    font-family: var(--mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--amber);
-    margin-bottom: 0.4rem;
-  }
-  .proj-block p {
-    color: var(--ink-mute);
-    font-size: 0.95rem;
-  }
-  @media (max-width: 820px) {
-    .proj { grid-template-columns: 1fr; gap: 1.5rem; }
-  }
-
-  /* ─────────── Discipline ─────────── */
-  .disc-quote {
-    border-left: 2px solid var(--amber);
-    padding: 0.5rem 0 0.5rem 1.5rem;
-    margin: 2rem 0 2.5rem;
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: clamp(1.15rem, 2vw, 1.4rem);
-    color: var(--ink);
-    max-width: 50ch;
-    line-height: 1.5;
-  }
-  .disc-attr {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--ink-mute);
-    letter-spacing: 0.1em;
-    margin-top: 1rem;
-  }
-  .disc-attr::before { content: '— '; color: var(--ink-dim); }
-
-  .disc-list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-  .disc-item .num {
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    color: var(--amber);
-    letter-spacing: 0.15em;
-    margin-bottom: 0.8rem;
-  }
-  .disc-item h4 {
-    font-family: var(--serif);
-    font-size: 1.1rem;
-    margin-bottom: 0.6rem;
-    color: var(--ink);
-    font-weight: 500;
-  }
-  .disc-item p {
-    color: var(--ink-mute);
-    font-size: 0.9rem;
-  }
-  @media (max-width: 820px) {
-    .disc-list { grid-template-columns: 1fr; gap: 1.5rem; }
-  }
-
-  /* ─────────── Contact ─────────── */
-  #contact { padding-bottom: 5rem; }
-  .contact-card {
-    background: var(--bg-deep);
-    border: 1px solid var(--line);
-    padding: clamp(2rem, 5vw, 3.5rem);
-    margin-top: 1.5rem;
-  }
-  .contact-card h2 {
-    font-size: clamp(1.6rem, 3.2vw, 2.2rem);
-    max-width: 22ch;
-    margin-bottom: 1.5rem;
-  }
-  .contact-card p {
-    color: var(--ink-mute);
-    max-width: 55ch;
-    margin-bottom: 2rem;
-  }
-  .contact-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem 2rem;
-    margin: 2.5rem 0;
-    padding: 1.5rem 0;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-  }
-  .contact-grid .item .lbl {
-    font-family: var(--mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ink-dim);
-    margin-bottom: 0.4rem;
-  }
-  .contact-grid .item .val {
-    font-family: var(--mono);
-    font-size: 0.95rem;
-    color: var(--ink);
-  }
-  .contact-grid .item .val a {
-    color: var(--ink);
-    text-decoration: none;
-    border-bottom: 1px solid var(--line-strong);
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .contact-grid .item .val a:hover {
-    color: var(--amber);
-    border-color: var(--amber);
-  }
-  @media (max-width: 720px) {
-    .contact-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ─────────── Footer ─────────── */
-  footer {
-    border-top: 1px solid var(--line);
-    padding: 2rem var(--pad);
-    text-align: center;
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    color: var(--ink-dim);
-    letter-spacing: 0.12em;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Reveal animation */
-  .reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.in {
-    opacity: 1;
-    transform: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-    .reveal { opacity: 1; transform: none; }
-  }
-</style>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -729,11 +32,11 @@
   <div class="statusbar-inner">
     <div class="left">
       <span><span class="dot"></span>SYSTEM: ONLINE</span>
-      <span class="stat-hide-mobile">REGION: US-EAST-1</span>
+      <span class="stat-hide-mobile">LOCATION: NEW JERSEY</span>
     </div>
     <div class="right">
-      <span class="stat-hide-mobile">UPTIME: 99.9%</span>
-      <span>BLEONFLORES.1 // PORTFOLIO/V1</span>
+      <span class="stat-hide-mobile">FOCUS: CLOUD / NETWORK / DEVOPS</span>
+      <span>BLEONFLORES1.COM // PORTFOLIO/V1</span>
     </div>
   </div>
 </div>
@@ -741,18 +44,17 @@
 <!-- Primary nav -->
 <nav class="primary" aria-label="Primary">
   <div class="nav-inner">
-    <a href="#thesis" class="brand">BRANDON&nbsp;FLORES</a>
+    <a href="#thesis" class="brand">BRANDON&nbsp;LEON&nbsp;FLORES</a>
     <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu" aria-expanded="false">
       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
       </svg>
     </button>
     <ul class="nav-links" id="nav-links">
-      <li><a href="#thesis">Thesis</a></li>
-      <li><a href="#trajectory">Trajectory</a></li>
-      <li><a href="#curriculum">Curriculum</a></li>
+      <li><a href="#thesis">About</a></li>
+      <li><a href="#trajectory">Education</a></li>
+      <li><a href="#curriculum">Skills</a></li>
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#discipline">Discipline</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
@@ -762,25 +64,26 @@
 
 <!-- ─────────── 1. THESIS ─────────── -->
 <section id="thesis">
+  <div class="thesis-layout">
   <div class="thesis-content">
   <div class="hero-meta reveal">
-    <span><span class="tick">▸</span>Monmouth County, NJ</span>
-    <span>B.S. Information Technology · NJIT · Dec 2026</span>
+    <span><span class="tick">▸</span>Red Bank New Jersey, USA</span>
+    <span>NJIT student · Bachelor's in progress</span>
   </div>
 
-  <p class="eyebrow reveal">Cloud engineering — AWS networking &amp; security</p>
+  <p class="eyebrow reveal">Information Technology Student</p>
 
   <h1 class="thesis reveal">
-    I design cloud environments that are <em>private by default</em>, observable end to end, and built to keep working when something goes wrong.
+    Hi, I'm Brandon Leon
   </h1>
 
   <p class="hero-sub reveal">
-    I'm transitioning from web development into cloud engineering with a focus on the layer where infrastructure, reliability, and trust converge. My priority is the boring, defensible part: identity boundaries, network segmentation, and the logs that prove a system behaved the way it was supposed to.
+    Information Technology student at NJIT with a Computer Science foundation and experience in web development, production website support, Linux systems, databases, and backend-supported business applications.
   </p>
 
   <div class="signal-row reveal">
-    <div><span class="label">For</span> &nbsp;<span class="value">Cloud &amp; security teams hiring an emerging infrastructure engineer</span></div>
-    <div><span class="label">Signal</span> &nbsp;<span class="archetype">Guardian × Sage</span></div>
+    <div><span class="label">Open to</span> &nbsp;<span class="value">Web Development, Systems Support, Cloud Support, and DevOps Internship opportunities</span></div>
+    <div><span class="label">Signal</span> &nbsp;<span class="archetype">Web infrastructure + systems fundamentals</span></div>
   </div>
 
   <div class="cta-row reveal">
@@ -788,333 +91,459 @@
     <a href="#contact" class="btn">Contact</a>
   </div>
 
-  <div class="stats reveal">
-    <div class="stat">
-      <div class="stat-num">3+</div>
-      <div class="stat-label">years building production sites for brands including Mercedes-Benz, Cadillac, and Northwell Health</div>
+  <div class="tech-marquee reveal">
+    <div class="tech-row">
+      <div class="tech-strip" aria-label="Languages: JavaScript, TypeScript, Python, PHP, Java, C++, HTML5, CSS3, SQL, Bash">
+        <div class="tech-track slide-left" aria-hidden="true">
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="" class="tech-icon">JavaScript</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" alt="" class="tech-icon">TypeScript</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="" class="tech-icon">Python</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="" class="tech-icon">PHP</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="" class="tech-icon">Java</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="" class="tech-icon">C++</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="" class="tech-icon">HTML5</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="" class="tech-icon">CSS3</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="" class="tech-icon">SQL</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bash/bash-original.svg" alt="" class="tech-icon">Bash</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="" class="tech-icon">JavaScript</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" alt="" class="tech-icon">TypeScript</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="" class="tech-icon">Python</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="" class="tech-icon">PHP</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="" class="tech-icon">Java</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="" class="tech-icon">C++</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="" class="tech-icon">HTML5</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="" class="tech-icon">CSS3</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="" class="tech-icon">SQL</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bash/bash-original.svg" alt="" class="tech-icon">Bash</span>
+        </div>
+      </div>
     </div>
-    <div class="stat">
-      <div class="stat-num">2</div>
-      <div class="stat-label">AWS certifications in active study — Solutions Architect Associate, then Security Specialty</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">EN/ES</div>
-      <div class="stat-label">bilingual — fluent communication across technical and non-technical audiences</div>
+
+    <div class="tech-row">
+      <div class="tech-strip" aria-label="Tools and platforms: Supabase, Flutter, Linux, MySQL, Git, WordPress, AWS, Cloudflare, Docker, Figma">
+        <div class="tech-track slide-right" aria-hidden="true">
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" alt="" class="tech-icon">Supabase</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg" alt="" class="tech-icon">Flutter</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" alt="" class="tech-icon">Linux</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="" class="tech-icon">MySQL</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="" class="tech-icon">Git</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-plain.svg" alt="" class="tech-icon">WordPress</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="" class="tech-icon">AWS</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cloudflare/cloudflare-original.svg" alt="" class="tech-icon">Cloudflare</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="" class="tech-icon">Docker</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" alt="" class="tech-icon">Figma</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" alt="" class="tech-icon">Supabase</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg" alt="" class="tech-icon">Flutter</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" alt="" class="tech-icon">Linux</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="" class="tech-icon">MySQL</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="" class="tech-icon">Git</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-plain.svg" alt="" class="tech-icon">WordPress</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="" class="tech-icon">AWS</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cloudflare/cloudflare-original.svg" alt="" class="tech-icon">Cloudflare</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="" class="tech-icon">Docker</span>
+          <span class="tech-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" alt="" class="tech-icon">Figma</span>
+        </div>
+      </div>
     </div>
   </div>
   </div><!-- /.thesis-content -->
-  <canvas id="cloud-canvas" aria-hidden="true"></canvas>
+  <figure class="hero-portrait reveal">
+    <img src="assets/hero-portrait.jpg" alt="Brandon Leon Flores seated portrait" loading="eager" decoding="async">
+  </figure>
+  </div><!-- /.thesis-layout -->
 </section>
 
 <!-- ─────────── 2. TRAJECTORY (Operating Model) ─────────── -->
 <section id="trajectory">
-  <p class="eyebrow reveal">Operating model</p>
-  <h2 class="section-title reveal">How I move from agency web work toward cloud infrastructure.</h2>
+  <p class="eyebrow reveal">Education &amp; experience</p>
+  <!-- <h2 class="section-title reveal">A foundation in computer science, web delivery, and network-focused systems work.</h2> -->
 
   <div class="traj-grid">
     <div class="traj-cell reveal">
-      <div class="traj-num">01 / FOUNDATION</div>
-      <h3>Start where the data lives</h3>
-      <p>A.S. in Computer Science at Brookdale: Java, assembly, data structures, database internals, and Calculus I–III. The fascination was always how data was being handled behind the application — that's still the lens I bring to cloud.</p>
+      <img class="traj-logo traj-logo-njit" src="assets/logo-njit.png" alt="New Jersey Institute of Technology logo" />
+      <div class="traj-num">01 / NJIT · 2023-2026</div>
+      <h3>Bachelor's In Information Technology</h3>
+      <p class="traj-description">Relevant coursework: System Integration, E-commerce Systems, Web Systems Development, Data Structures &amp; Algorithms.</p>
+      <ul class="traj-keywords">
+        <li>Linux Systems</li>
+        <li>Networking Fundamentals</li>
+        <li>Database Systems</li>
+        <li>Bash Scripting</li>
+        <li>Systems Analysis</li>
+        <li>Web Infrastructure</li>
+        <li>Operating Systems</li>
+        <li>Programming Concepts</li>
+      </ul>
     </div>
     <div class="traj-cell reveal">
-      <div class="traj-num">02 / PRACTICE</div>
-      <h3>Ship under real constraints</h3>
-      <p>Three years in marketing agencies as a web developer: speed, security, structure, UX. Hosting environments, SSH, CRON automation, AI integrated with CMS systems. Production sites for clients including Mercedes-Benz, Cadillac, and Northwell Health.</p>
+      <div class="traj-num">02 / INDUSTRY MEDIA · 2023-PRESENT</div>
+      <h3>Production Web Experience</h3>
+      <p class="traj-description">Production experience: building and maintaining client websites, troubleshooting WordPress and PHP issues, improving performance, supporting DNS / SSL, handling SFTP edits, and strengthening hosting reliability.</p>
+      <ul class="traj-keywords">
+        <li>WordPress Development</li>
+        <li>PHP Troubleshooting</li>
+        <li>Plugin Conflicts</li>
+        <li>DNS / SSL</li>
+        <li>SFTP File Edits</li>
+        <li>Performance Optimization</li>
+        <li>Technical SEO</li>
+        <li>Hosting Reliability</li>
+      </ul>
     </div>
     <div class="traj-cell reveal">
-      <div class="traj-num">03 / DEPTH</div>
-      <h3>Go back for the systems layer</h3>
-      <p>B.S. in Information Technology at NJIT: TCP/IP, DNS, SSL/TLS, Linux, bash. Building toward AWS Solutions Architect Associate and AWS Security Specialty. The goal is to engineer the layer most apps depend on but few people see.</p>
+      <img class="traj-logo traj-logo-brookdale" src="assets/logo-brookdale.webp" alt="Brookdale Community College logo" />
+      <div class="traj-num">03 / BROOKDALE · 2019-2022</div>
+      <h3>A.S. Computer Science</h3>
+      <p class="traj-description">Computer science foundation: Java programming, data structures, object-oriented design, desktop applications, discrete mathematics, calculus, problem solving, and backend logic.</p>
+      <ul class="traj-keywords">
+        <li>Java Programming</li>
+        <li>Data Structures</li>
+        <li>Object-Oriented Design</li>
+        <li>Desktop Applications</li>
+        <li>Discrete Mathematics</li>
+        <li>Calculus</li>
+        <li>Problem Solving</li>
+        <li>Backend Logic</li>
+      </ul>
     </div>
   </div>
 </section>
 
 <!-- ─────────── 3. CURRICULUM (Skills) ─────────── -->
 <section id="curriculum">
-  <p class="eyebrow reveal">Curriculum</p>
-  <h2 class="section-title reveal">Focus skills I'm building toward production-ready depth.</h2>
+  <p class="eyebrow reveal">Skills &amp; tools</p>
+  <!-- <h2 class="section-title reveal">Practical web infrastructure skills backed by systems fundamentals.</h2> -->
 
-  <div class="curr-grid">
-    <div class="curr-card reveal">
-      <h3>AWS Core</h3>
-      <ul>
-        <li>VPC</li><li>EC2</li><li>S3</li><li>Route 53</li>
-        <li>CloudFront</li><li>Lambda</li><li>RDS</li>
-      </ul>
-    </div>
-    <div class="curr-card reveal">
-      <h3>Security</h3>
-      <ul>
-        <li>IAM policy design</li><li>KMS</li><li>Secrets Manager</li>
-        <li>GuardDuty</li><li>Security Hub</li><li>WAF</li>
-        <li>Shield</li><li>CIS benchmarks</li>
-      </ul>
-    </div>
-    <div class="curr-card reveal">
-      <h3>Networking</h3>
-      <ul>
-        <li>Subnetting / CIDR design</li><li>Transit Gateway</li>
-        <li>VPC peering</li><li>PrivateLink</li>
-        <li>DNSSEC</li><li>TLS 1.3</li>
-      </ul>
-    </div>
-    <div class="curr-card reveal">
-      <h3>IaC &amp; Observability</h3>
-      <ul>
-        <li>Terraform</li><li>CloudFormation</li>
-        <li>CloudWatch</li><li>CloudTrail</li>
-        <li>VPC Flow Logs</li><li>Athena</li>
-      </ul>
-    </div>
-    <div class="curr-card cert reveal">
-      <h3>Certifications in progress</h3>
-      <div class="cert-row">
-        <span class="item">AWS Solutions Architect Associate</span>
-        <span class="arrow">→</span>
-        <span class="item">AWS Security Specialty</span>
-        <span class="cert-status">In study</span>
+  <div class="curr-grid skill-showcase">
+    <article class="curr-card skill-card reveal">
+      <h3>Languages</h3>
+      <div class="skill-marquee" aria-label="Programming languages">
+        <div class="skill-row">
+          <div class="skill-track skill-slide-left">
+            <div class="skill-set">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="" class="skill-icon">JavaScript</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" alt="" class="skill-icon">TypeScript</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="" class="skill-icon">Python</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="" class="skill-icon">PHP</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="" class="skill-icon">Java</span>
+            </div>
+            <div class="skill-set" aria-hidden="true">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="" class="skill-icon">JavaScript</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" alt="" class="skill-icon">TypeScript</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="" class="skill-icon">Python</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="" class="skill-icon">PHP</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="" class="skill-icon">Java</span>
+            </div>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-track skill-slide-right">
+            <div class="skill-set">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="" class="skill-icon">C++</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="" class="skill-icon">HTML5</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="" class="skill-icon">CSS3</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bash/bash-original.svg" alt="" class="skill-icon">Bash</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="" class="skill-icon">SQL</span>
+            </div>
+            <div class="skill-set" aria-hidden="true">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="" class="skill-icon">C++</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="" class="skill-icon">HTML5</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="" class="skill-icon">CSS3</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bash/bash-original.svg" alt="" class="skill-icon">Bash</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="" class="skill-icon">SQL</span>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </article>
+
+    <article class="curr-card skill-card reveal">
+      <h3>Frameworks &amp; Libraries</h3>
+      <div class="skill-marquee" aria-label="Frameworks and libraries">
+        <div class="skill-row">
+          <div class="skill-track skill-slide-right">
+            <div class="skill-set">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="" class="skill-icon">React</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" alt="" class="skill-icon icon-contrast">Next.js</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" alt="" class="skill-icon">Node.js</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" alt="" class="skill-icon">Tailwind CSS</span>
+            </div>
+            <div class="skill-set" aria-hidden="true">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="" class="skill-icon">React</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" alt="" class="skill-icon icon-contrast">Next.js</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" alt="" class="skill-icon">Node.js</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" alt="" class="skill-icon">Tailwind CSS</span>
+            </div>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-track skill-slide-left">
+            <div class="skill-set">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg" alt="" class="skill-icon">Flutter</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-plain.svg" alt="" class="skill-icon">WordPress</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" alt="" class="skill-icon">Supabase</span>
+            </div>
+            <div class="skill-set" aria-hidden="true">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg" alt="" class="skill-icon">Flutter</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-plain.svg" alt="" class="skill-icon">WordPress</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" alt="" class="skill-icon">Supabase</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="curr-card skill-card reveal">
+      <h3>Databases</h3>
+      <div class="skill-marquee" aria-label="Databases">
+        <div class="skill-row">
+          <div class="skill-track skill-slide-left">
+            <div class="skill-set">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="" class="skill-icon">MySQL</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="" class="skill-icon">PostgreSQL</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" alt="" class="skill-icon">Supabase</span>
+            </div>
+            <div class="skill-set" aria-hidden="true">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="" class="skill-icon">MySQL</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="" class="skill-icon">PostgreSQL</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" alt="" class="skill-icon">Supabase</span>
+            </div>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-track skill-slide-right">
+            <div class="skill-set">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg" alt="" class="skill-icon">SQLite</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="" class="skill-icon">MongoDB</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg" alt="" class="skill-icon">Redis</span>
+            </div>
+            <div class="skill-set" aria-hidden="true">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg" alt="" class="skill-icon">SQLite</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="" class="skill-icon">MongoDB</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg" alt="" class="skill-icon">Redis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="curr-card skill-card reveal">
+      <h3>Tools &amp; Platforms</h3>
+      <div class="skill-marquee" aria-label="Tools and platforms">
+        <div class="skill-row">
+          <div class="skill-track skill-slide-right">
+            <div class="skill-set">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" alt="" class="skill-icon">Linux</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="" class="skill-icon">Git</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="" class="skill-icon">Docker</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cloudflare/cloudflare-original.svg" alt="" class="skill-icon">Cloudflare</span>
+            </div>
+            <div class="skill-set" aria-hidden="true">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" alt="" class="skill-icon">Linux</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="" class="skill-icon">Git</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="" class="skill-icon">Docker</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cloudflare/cloudflare-original.svg" alt="" class="skill-icon">Cloudflare</span>
+            </div>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-track skill-slide-left">
+            <div class="skill-set">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="" class="skill-icon">AWS</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" alt="" class="skill-icon">Figma</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apache/apache-original.svg" alt="" class="skill-icon">Apache</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="" class="skill-icon">VS Code</span>
+            </div>
+            <div class="skill-set" aria-hidden="true">
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="" class="skill-icon">AWS</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" alt="" class="skill-icon">Figma</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apache/apache-original.svg" alt="" class="skill-icon">Apache</span>
+              <span class="skill-chip"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="" class="skill-icon">VS Code</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
   </div>
 </section>
 
 <!-- ─────────── 4. PROJECTS ─────────── -->
 <section id="projects">
   <p class="eyebrow reveal">Selected projects</p>
-  <h2 class="section-title reveal">Work that moves between web delivery and infrastructure thinking.</h2>
+  <h2 class="section-title reveal">Projects that show backend thinking, web delivery, and software fundamentals.</h2>
   <p class="proj-intro reveal">
-    Each project below is framed as a system, not a screenshot — the question I'm always asking is what survives once real users, traffic, and failure are involved.
+    These projects come from Brandon's current portfolio and GitHub presence: a construction operations panel, a secure business dashboard, a compiler-style programming language project, and early Unity arcade builds.
   </p>
 
-  <!-- Project 1 -->
-  <article class="proj reveal">
-    <div class="proj-visual" aria-hidden="true">
-      <!-- Stylized VPC / network topology -->
-      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <pattern id="grid1" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1f2a37" stroke-width="0.5"/>
-          </pattern>
-        </defs>
-        <rect width="400" height="300" fill="#080c11"/>
-        <rect width="400" height="300" fill="url(#grid1)"/>
-        <!-- VPC outer -->
-        <rect x="40" y="40" width="320" height="220" fill="none" stroke="#2d3a4a" stroke-width="1" stroke-dasharray="4 3"/>
-        <text x="48" y="56" font-family="JetBrains Mono, monospace" font-size="9" fill="#5a6473" letter-spacing="1">VPC 10.0.0.0/16</text>
-        <!-- Public subnet -->
-        <rect x="60" y="78" width="130" height="70" fill="#131a22" stroke="#7ab692" stroke-width="1"/>
-        <text x="68" y="93" font-family="JetBrains Mono, monospace" font-size="8" fill="#7ab692" letter-spacing="1">PUBLIC</text>
-        <circle cx="95" cy="120" r="10" fill="none" stroke="#d4a24a" stroke-width="1.5"/>
-        <text x="89" y="124" font-family="JetBrains Mono, monospace" font-size="8" fill="#d4a24a">LB</text>
-        <circle cx="155" cy="120" r="10" fill="none" stroke="#d4a24a" stroke-width="1.5"/>
-        <text x="148" y="124" font-family="JetBrains Mono, monospace" font-size="8" fill="#d4a24a">NAT</text>
-        <!-- Private subnet -->
-        <rect x="210" y="78" width="130" height="70" fill="#131a22" stroke="#4a8a66" stroke-width="1"/>
-        <text x="218" y="93" font-family="JetBrains Mono, monospace" font-size="8" fill="#4a8a66" letter-spacing="1">PRIVATE</text>
-        <rect x="225" cy="115" y="105" width="20" height="14" fill="none" stroke="#e6edf3" stroke-width="1"/>
-        <rect x="255" y="105" width="20" height="14" fill="none" stroke="#e6edf3" stroke-width="1"/>
-        <rect x="285" y="105" width="20" height="14" fill="none" stroke="#e6edf3" stroke-width="1"/>
-        <text x="225" y="138" font-family="JetBrains Mono, monospace" font-size="7" fill="#8b97a8">EC2 · EC2 · EC2</text>
-        <!-- Data subnet -->
-        <rect x="60" y="170" width="280" height="60" fill="#131a22" stroke="#2d3a4a" stroke-width="1"/>
-        <text x="68" y="185" font-family="JetBrains Mono, monospace" font-size="8" fill="#5a6473" letter-spacing="1">DATA · ISOLATED</text>
-        <ellipse cx="120" cy="208" rx="18" ry="8" fill="none" stroke="#d4a24a" stroke-width="1"/>
-        <text x="108" y="211" font-family="JetBrains Mono, monospace" font-size="7" fill="#d4a24a">RDS</text>
-        <ellipse cx="200" cy="208" rx="18" ry="8" fill="none" stroke="#d4a24a" stroke-width="1"/>
-        <text x="188" y="211" font-family="JetBrains Mono, monospace" font-size="7" fill="#d4a24a">RDS</text>
-        <ellipse cx="280" cy="208" rx="20" ry="8" fill="none" stroke="#7ab692" stroke-width="1"/>
-        <text x="266" y="211" font-family="JetBrains Mono, monospace" font-size="7" fill="#7ab692">KMS</text>
-        <!-- Connecting lines -->
-        <line x1="190" y1="113" x2="210" y2="113" stroke="#2d3a4a" stroke-width="1"/>
-        <line x1="200" y1="148" x2="200" y2="170" stroke="#2d3a4a" stroke-width="1" stroke-dasharray="2 2"/>
-        <text x="48" y="276" font-family="JetBrains Mono, monospace" font-size="7" fill="#5a6473">› TIER-ISOLATED · LEAST-PRIVILEGE · LOGGED</text>
-      </svg>
-    </div>
-    <div class="proj-body">
-      <div class="proj-meta">Lab · AWS / Terraform</div>
-      <h3>Three-tier VPC with private-by-default routing</h3>
-      <div class="proj-block">
-        <div class="lbl">Outcome</div>
-        <p>Public, application, and data tiers fully isolated. Application and data subnets carry no internet route by default; egress flows through a NAT gateway and is captured in VPC Flow Logs for review in Athena.</p>
-      </div>
-      <div class="proj-block">
-        <div class="lbl">Proof system</div>
-        <p>Terraform module with explicit CIDR layout, route tables, security groups, and IAM boundaries. CloudTrail enabled, GuardDuty findings routed to Security Hub. Designed to be torn down and rebuilt cleanly from code.</p>
-      </div>
-    </div>
-  </article>
+  <div class="project-grid">
+    <article class="project-card project-card-featured reveal">
+      <div class="project-meta">2026 · Supabase / Flutter / Offline Sync</div>
+      <h3>Construction Panel</h3>
+      <p class="project-summary">A fully functional construction management system built around the real workflow from leads to clients, proposals, payments, queued jobs, active schedules, and completed projects.</p>
 
-  <!-- Project 2 -->
-  <article class="proj reveal">
-    <div class="proj-visual" aria-hidden="true">
-      <!-- Stylized observability dashboard -->
-      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <pattern id="grid2" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1f2a37" stroke-width="0.5"/>
-          </pattern>
-        </defs>
-        <rect width="400" height="300" fill="#080c11"/>
-        <rect width="400" height="300" fill="url(#grid2)"/>
-        <text x="20" y="32" font-family="JetBrains Mono, monospace" font-size="9" fill="#5a6473" letter-spacing="1">DASHBOARD · LIVE</text>
-        <circle cx="370" cy="28" r="4" fill="#7ab692"/>
-        <!-- Chart 1 line graph -->
-        <rect x="20" y="50" width="170" height="100" fill="#131a22" stroke="#1f2a37"/>
-        <text x="28" y="65" font-family="JetBrains Mono, monospace" font-size="7" fill="#8b97a8" letter-spacing="1">REQUESTS / SEC</text>
-        <polyline points="28,135 50,128 72,118 94,124 116,108 138,98 160,104 182,88" fill="none" stroke="#d4a24a" stroke-width="1.5"/>
-        <polyline points="28,140 50,138 72,135 94,136 116,132 138,130 160,131 182,128" fill="none" stroke="#4a8a66" stroke-width="1.2" stroke-dasharray="2 2"/>
-        <!-- Chart 2 bars -->
-        <rect x="210" y="50" width="170" height="100" fill="#131a22" stroke="#1f2a37"/>
-        <text x="218" y="65" font-family="JetBrains Mono, monospace" font-size="7" fill="#8b97a8" letter-spacing="1">P95 LATENCY (ms)</text>
-        <rect x="222" y="120" width="14" height="22" fill="#4a8a66"/>
-        <rect x="240" y="115" width="14" height="27" fill="#4a8a66"/>
-        <rect x="258" y="108" width="14" height="34" fill="#7ab692"/>
-        <rect x="276" y="100" width="14" height="42" fill="#d4a24a"/>
-        <rect x="294" y="95" width="14" height="47" fill="#d4a24a"/>
-        <rect x="312" y="105" width="14" height="37" fill="#7ab692"/>
-        <rect x="330" y="112" width="14" height="30" fill="#4a8a66"/>
-        <rect x="348" y="118" width="14" height="24" fill="#4a8a66"/>
-        <!-- Logs panel -->
-        <rect x="20" y="170" width="360" height="110" fill="#131a22" stroke="#1f2a37"/>
-        <text x="28" y="185" font-family="JetBrains Mono, monospace" font-size="7" fill="#8b97a8" letter-spacing="1">FLOW LOGS · TAIL</text>
-        <text x="28" y="205" font-family="JetBrains Mono, monospace" font-size="7" fill="#7ab692">▸ ACCEPT 10.0.1.4 → 10.0.2.7 :443</text>
-        <text x="28" y="220" font-family="JetBrains Mono, monospace" font-size="7" fill="#7ab692">▸ ACCEPT 10.0.1.4 → 10.0.2.7 :443</text>
-        <text x="28" y="235" font-family="JetBrains Mono, monospace" font-size="7" fill="#c66b5e">▸ REJECT 198.51.100.6 → 10.0.2.7 :22</text>
-        <text x="28" y="250" font-family="JetBrains Mono, monospace" font-size="7" fill="#7ab692">▸ ACCEPT 10.0.1.5 → 10.0.3.2 :5432</text>
-        <text x="28" y="265" font-family="JetBrains Mono, monospace" font-size="7" fill="#d4a24a">▸ FLAG   10.0.1.4 → 10.0.2.7 :443 ttl</text>
-      </svg>
-    </div>
-    <div class="proj-body">
-      <div class="proj-meta">Lab · Observability stack</div>
-      <h3>End-to-end logging and detection on a hardened VPC</h3>
-      <div class="proj-block">
-        <div class="lbl">Outcome</div>
-        <p>A baseline observability layer where every accept and reject in the network is queryable, every API call is recorded, and a malicious pattern surfaces in a dashboard rather than a postmortem.</p>
+      <div class="project-media project-carousel" data-project-carousel aria-label="Construction Panel media carousel">
+        <a class="project-carousel-slide project-carousel-bright is-active" href="assets/jbm-construction-panel.png" target="_blank" rel="noopener" data-project-slide aria-label="View Construction Panel dashboard">
+          <img src="assets/jbm-construction-panel.png" alt="Construction Panel dashboard">
+        </a>
+        <a class="project-carousel-slide project-carousel-contain" href="assets/jbm-flutter-mobile-dashboard.png" target="_blank" rel="noopener" data-project-slide aria-label="View Construction Panel mobile app">
+          <img src="assets/jbm-flutter-mobile-dashboard.png" alt="Construction Panel Flutter mobile app">
+        </a>
+        <a class="project-carousel-slide project-carousel-contain" href="assets/jbm-masonry-app-icon.jpg" target="_blank" rel="noopener" data-project-slide aria-label="View JBM Masonry app icon">
+          <img src="assets/jbm-masonry-app-icon.jpg" alt="JBM Masonry app icon">
+        </a>
+        <button class="project-carousel-btn prev" type="button" data-project-slide-prev aria-label="Previous Construction Panel image">&lsaquo;</button>
+        <button class="project-carousel-btn next" type="button" data-project-slide-next aria-label="Next Construction Panel image">&rsaquo;</button>
+        <div class="project-carousel-dots" aria-label="Construction Panel media slides">
+          <button class="is-active" type="button" data-project-slide-to="0" aria-label="Show dashboard screenshot" aria-pressed="true"></button>
+          <button type="button" data-project-slide-to="1" aria-label="Show mobile app screenshot" aria-pressed="false"></button>
+          <button type="button" data-project-slide-to="2" aria-label="Show app icon" aria-pressed="false"></button>
+        </div>
       </div>
-      <div class="proj-block">
-        <div class="lbl">Proof system</div>
-        <p>VPC Flow Logs to S3, queried with Athena. CloudTrail organization trail with KMS-encrypted log storage. CloudWatch alarms on root-account use and IAM changes. GuardDuty findings centralized through Security Hub.</p>
+
+
+      <div class="project-tags" aria-label="Construction Panel technologies">
+        <span>Supabase</span>
+        <span>Flutter</span>
+        <span>JavaScript</span>
+        <span>Offline Sync</span>
+        <span>Image Uploads</span>
+        <span>Business Workflow</span>
       </div>
-    </div>
-  </article>
-
-  <!-- Project 3 -->
-  <article class="proj reveal">
-    <div class="proj-visual" aria-hidden="true">
-      <!-- Stylized agency → cloud bridge diagram -->
-      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <pattern id="grid3" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1f2a37" stroke-width="0.5"/>
-          </pattern>
-        </defs>
-        <rect width="400" height="300" fill="#080c11"/>
-        <rect width="400" height="300" fill="url(#grid3)"/>
-        <!-- Origin -->
-        <rect x="30" y="100" width="100" height="100" fill="#131a22" stroke="#2d3a4a"/>
-        <text x="40" y="118" font-family="JetBrains Mono, monospace" font-size="8" fill="#8b97a8" letter-spacing="1">ORIGIN</text>
-        <text x="40" y="135" font-family="JetBrains Mono, monospace" font-size="7" fill="#5a6473">CMS · PHP</text>
-        <rect x="40" y="145" width="80" height="3" fill="#4a8a66"/>
-        <rect x="40" y="155" width="65" height="3" fill="#4a8a66"/>
-        <rect x="40" y="165" width="72" height="3" fill="#4a8a66"/>
-        <text x="40" y="185" font-family="JetBrains Mono, monospace" font-size="6" fill="#5a6473">ssh · cron · git</text>
-        <!-- Edge -->
-        <rect x="270" y="60" width="100" height="60" fill="#131a22" stroke="#d4a24a"/>
-        <text x="280" y="78" font-family="JetBrains Mono, monospace" font-size="8" fill="#d4a24a" letter-spacing="1">CLOUDFRONT</text>
-        <text x="280" y="93" font-family="JetBrains Mono, monospace" font-size="7" fill="#8b97a8">edge · WAF</text>
-        <text x="280" y="106" font-family="JetBrains Mono, monospace" font-size="7" fill="#8b97a8">TLS 1.3</text>
-        <!-- DNS -->
-        <rect x="270" y="140" width="100" height="50" fill="#131a22" stroke="#7ab692"/>
-        <text x="280" y="158" font-family="JetBrains Mono, monospace" font-size="8" fill="#7ab692" letter-spacing="1">ROUTE 53</text>
-        <text x="280" y="173" font-family="JetBrains Mono, monospace" font-size="7" fill="#8b97a8">DNSSEC</text>
-        <!-- S3 -->
-        <rect x="270" y="210" width="100" height="50" fill="#131a22" stroke="#2d3a4a"/>
-        <text x="280" y="228" font-family="JetBrains Mono, monospace" font-size="8" fill="#8b97a8" letter-spacing="1">S3 · ASSETS</text>
-        <text x="280" y="243" font-family="JetBrains Mono, monospace" font-size="7" fill="#5a6473">SSE-KMS</text>
-        <!-- Connecting lines -->
-        <path d="M 130 130 L 200 130 L 200 90 L 270 90" fill="none" stroke="#d4a24a" stroke-width="1" stroke-dasharray="3 2"/>
-        <path d="M 130 150 L 270 165" fill="none" stroke="#7ab692" stroke-width="1" stroke-dasharray="3 2"/>
-        <path d="M 130 175 L 200 175 L 200 235 L 270 235" fill="none" stroke="#2d3a4a" stroke-width="1" stroke-dasharray="3 2"/>
-        <text x="20" y="276" font-family="JetBrains Mono, monospace" font-size="7" fill="#5a6473">› AGENCY ORIGIN HARDENED BEHIND AWS EDGE</text>
-      </svg>
-    </div>
-    <div class="proj-body">
-      <div class="proj-meta">Applied · Agency × Cloud</div>
-      <h3>Hardening agency client sites with AWS edge services</h3>
-      <div class="proj-block">
-        <div class="lbl">Outcome</div>
-        <p>A repeatable pattern for putting CloudFront, WAF, and Route 53 in front of CMS-driven client sites — moving security and TLS termination to the edge instead of leaving it on a single origin server.</p>
+      <div class="project-actions">
+        <a href="assets/jbm-construction-panel.png" target="_blank" rel="noopener">Dashboard</a>
+        <a href="assets/jbm-flutter-mobile-dashboard.png" target="_blank" rel="noopener">Mobile App</a>
+        <a href="assets/jbm-masonry-app-icon.jpg" target="_blank" rel="noopener">Brand View</a>
       </div>
-      <div class="proj-block">
-        <div class="lbl">Proof system</div>
-        <p>Three years of production agency work on Mercedes-Benz, Cadillac, and Northwell Health sites informed the constraints. Lab environments translate that hosting experience into AWS-native architecture: edge caching, managed certs, DNSSEC, KMS-encrypted asset storage.</p>
+    </article>
+
+    <article class="project-card reveal">
+      <div class="project-meta">2/27/2026 · PHP / MySQL</div>
+      <h3>CorePanel</h3>
+      <p class="project-summary">Secure admin and client dashboard with CRUD functionality for users, projects, images, PDFs, and receipts, plus authentication, CSRF protection, and activity logging.</p>
+      <div class="project-media">
+        <video class="project-video" controls muted loop playsinline preload="metadata" aria-label="CorePanel dashboard demo video">
+          <source src="assets/corepanel-demo.mp4" type="video/mp4">
+        </video>
       </div>
-    </div>
-  </article>
-</section>
+      <div class="project-tags">
+        <span>PHP</span>
+        <span>MySQL</span>
+        <span>Auth</span>
+        <span>CSRF</span>
+        <span>SiteGround</span>
+      </div>
+      <div class="project-actions">
+        <a href="https://github.com/brandon-leonf/CorePanel" target="_blank" rel="noopener">Code</a>
+        <a href="assets/corepanel-demo.mp4" target="_blank" rel="noopener">Demo Video</a>
+      </div>
+    </article>
 
-<!-- ─────────── 5. DISCIPLINE ─────────── -->
-<section id="discipline">
-  <p class="eyebrow reveal">Discipline</p>
-  <h2 class="section-title reveal">How I think about the work — and why I chose this layer of the stack.</h2>
+    <article class="project-card reveal">
+      <div class="project-meta">11/16/2024 · C++ / Compilers</div>
+      <h3>Mini C-Like Language</h3>
+      <p class="project-summary">Recursive-descent compiler for a mini C-like language with lexical analysis, syntax parsing, semantic validation, and runtime execution.</p>
+      <div class="project-media project-media-compiler" aria-hidden="true">
+        <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="260" fill="#0d1117"/>
+          <path d="M0 44h420M0 88h420M0 132h420M0 176h420M0 220h420M52 0v260M104 0v260M156 0v260M208 0v260M260 0v260M312 0v260M364 0v260" stroke="#1f2a37" stroke-width="1" opacity=".5"/>
+          <text x="24" y="35" font-family="JetBrains Mono, monospace" font-size="11" fill="#8b97a8" letter-spacing="2">MINI C-LIKE LANGUAGE</text>
+          <rect x="24" y="58" width="160" height="70" fill="#131a22" stroke="#354456"/>
+          <text x="38" y="84" font-family="JetBrains Mono, monospace" font-size="10" fill="#7ab692">scan tokens</text>
+          <text x="38" y="106" font-family="JetBrains Mono, monospace" font-size="10" fill="#d4a24a">int total = 0;</text>
+          <rect x="236" y="58" width="160" height="70" fill="#131a22" stroke="#354456"/>
+          <text x="253" y="84" font-family="JetBrains Mono, monospace" font-size="10" fill="#7ab692">parse grammar</text>
+          <text x="253" y="106" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b97a8">AST · scope</text>
+          <path d="M188 93h42" stroke="#d4a24a" stroke-width="2"/>
+          <rect x="76" y="158" width="268" height="58" fill="#131a22" stroke="#354456"/>
+          <text x="96" y="184" font-family="JetBrains Mono, monospace" font-size="10" fill="#d4a24a">validate symbols and types</text>
+          <text x="96" y="204" font-family="JetBrains Mono, monospace" font-size="10" fill="#7ab692">execute runtime</text>
+        </svg>
+      </div>
+      <div class="project-tags">
+        <span>C++</span>
+        <span>Compilers</span>
+        <span>Parser</span>
+        <span>Runtime</span>
+      </div>
+      <div class="project-actions">
+        <a href="https://github.com/brandon-leonf/mini-c" target="_blank" rel="noopener">Code</a>
+      </div>
+    </article>
 
-  <blockquote class="disc-quote reveal">
-    Most modern applications depend on infrastructure that is reliable and secure. I want to work at the level where performance, security, and system design come together.
-  </blockquote>
-  <div class="disc-attr reveal">Personal thesis</div>
+    <article class="project-card reveal">
+      <div class="project-meta">2021-2022 · Unity / C#</div>
+      <h3>Arcade Pong &amp; Arkanoid</h3>
+      <p class="project-summary">Retro-inspired Unity games focused on input handling, collision behavior, game-state flow, UI polish, and playable publishing through itch.io.</p>
+      <a class="project-media" href="assets/proj-visual-bg.png" target="_blank" rel="noopener" aria-label="View Arkanoid game screenshot">
+        <img src="assets/proj-visual-bg.png" alt="Arkanoid game menu screenshot">
+      </a>
+      <div class="project-tags">
+        <span>Unity</span>
+        <span>C#</span>
+        <span>Game State</span>
+        <span>Collision</span>
+      </div>
+      <div class="project-actions">
+        <a href="https://bleonn.itch.io/ping-pong" target="_blank" rel="noopener">Pong</a>
+        <a href="https://bleonn.itch.io/arkanoid" target="_blank" rel="noopener">Arkanoid</a>
+      </div>
+    </article>
 
-  <div class="disc-list">
-    <div class="disc-item reveal">
-      <div class="num">01</div>
-      <h4>Private by default</h4>
-      <p>The default state of any resource I provision is no public exposure. Access is opened deliberately, narrowly, and with a logged reason — never as a side effect.</p>
-    </div>
-    <div class="disc-item reveal">
-      <div class="num">02</div>
-      <h4>Observable end to end</h4>
-      <p>If I cannot prove what a system did, I cannot defend it. Logs, metrics, and audit trails are part of the build, not added when something breaks.</p>
-    </div>
-    <div class="disc-item reveal">
-      <div class="num">03</div>
-      <h4>Resilient under pressure</h4>
-      <p>Reliability shows up in the boring states: failover, retries, the calm rebuild from code. The interesting design happens before the incident, not after.</p>
-    </div>
+
   </div>
 </section>
 
-<!-- ─────────── 6. CONTACT ─────────── -->
+<!-- ─────────── 5. CONTACT ─────────── -->
 <section id="contact">
   <p class="eyebrow reveal">Contact</p>
 
   <div class="contact-card reveal">
-    <h2>Looking for cloud and security teams that take infrastructure seriously.</h2>
+    <h2>Open to opportunities in Cloud Engineering, Systems, and DevOps.</h2>
     <p>
-      I'm especially interested in teams working on multi-account AWS environments, network and identity architecture, or security tooling — places where the work of getting the foundation right is treated as the work, not an afterthought.
+      Brandon is looking for roles where web development experience, Linux and networking fundamentals, backend programming, and reliability-minded thinking can support modern infrastructure work.
     </p>
 
     <div class="contact-grid">
       <div class="item">
         <div class="lbl">Location</div>
-        <div class="val">Monmouth County, NJ — open to hybrid &amp; remote</div>
+        <div class="val">New Jersey, USA</div>
       </div>
       <div class="item">
-        <div class="lbl">Languages</div>
-        <div class="val">English · Spanish</div>
+        <div class="lbl">LinkedIn</div>
+        <div class="val">
+          <a class="contact-link" href="https://www.linkedin.com/in/brandonleonflores" target="_blank" rel="noopener">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img">
+                <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.25 8.25h4.5V24H.25V8.25zM8 8.25h4.32v2.15h.06c.6-1.14 2.08-2.34 4.28-2.34 4.58 0 5.43 3.02 5.43 6.94V24h-4.5v-7.98c0-1.9-.04-4.34-2.65-4.34-2.65 0-3.05 2.07-3.05 4.2V24H8V8.25z"/>
+              </svg>
+            </span>
+            brandonleonflores
+          </a>
+        </div>
       </div>
       <div class="item">
-        <div class="lbl">Portfolio</div>
-        <div class="val"><a href="https://bleonflores1.com" target="_blank" rel="noopener">bleonflores1.com</a></div>
+        <div class="lbl">GitHub</div>
+        <div class="val">
+          <a class="contact-link" href="https://github.com/brandon-leonf" target="_blank" rel="noopener">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img">
+                <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2.14c-3.2.7-3.87-1.37-3.87-1.37-.53-1.33-1.29-1.69-1.29-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.78 1.2 1.78 1.2 1.04 1.77 2.72 1.26 3.38.96.11-.75.41-1.26.74-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.04 0 0 .98-.31 3.18 1.18A10.98 10.98 0 0 1 12 6.03c.98 0 1.96.13 2.88.39 2.2-1.49 3.17-1.18 3.17-1.18.64 1.58.24 2.75.12 3.04.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.42.36.79 1.07.79 2.16v3.15c0 .31.21.68.8.56A11.52 11.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/>
+              </svg>
+            </span>
+            brandon-leonf
+          </a>
+        </div>
       </div>
       <div class="item">
         <div class="lbl">Email</div>
-        <div class="val"><a href="mailto:contact@bleonflores1.com">contact@bleonflores1.com</a></div>
+        <div class="val"><a href="mailto:leonfloresbrandon@gmail.com">leonfloresbrandon@gmail.com</a></div>
       </div>
     </div>
 
     <div class="cta-row">
-      <a href="mailto:contact@bleonflores1.com" class="btn btn-primary">Email Brandon</a>
-      <a href="https://bleonflores1.com" class="btn" target="_blank" rel="noopener">Visit portfolio</a>
+      <a href="mailto:leonfloresbrandon@gmail.com" class="btn btn-primary">Email Brandon</a>
+      <a href="assets/brandon-leon-flores-resume.pdf" class="btn" target="_blank" rel="noopener">View Resume</a>
+      <button class="btn" type="button" id="share-portfolio">Share Portfolio</button>
     </div>
   </div>
 </section>
@@ -1122,102 +551,25 @@
 </main>
 
 <footer>
-  <div>BRANDON FLORES · NJIT B.S. INFORMATION TECHNOLOGY · CLASS OF 2026</div>
+  <div>BRANDON LEON FLORES · NJIT STUDENT · WEB DEVELOPER · SYSTEMS-FOCUSED PORTFOLIO</div>
 </footer>
 
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
-  }
-}
-</script>
-<script type="module">
-  import * as THREE from 'three';
-  import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-  import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
-
-  const canvas = document.getElementById('cloud-canvas');
-  const section = document.getElementById('thesis');
-
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
-  camera.position.set(0, 0, 180);
-
-  const ambient = new THREE.AmbientLight(0xd4a24a, 0.6);
-  scene.add(ambient);
-  const dirLight = new THREE.DirectionalLight(0xe6edf3, 1.2);
-  dirLight.position.set(30, 50, 40);
-  scene.add(dirLight);
-  const fillLight = new THREE.DirectionalLight(0x7ab692, 0.4);
-  fillLight.position.set(-30, -10, 20);
-  scene.add(fillLight);
-
-  let cloud = null;
-
-  function resize() {
-    const w = canvas.offsetWidth;
-    const h = canvas.offsetHeight;
-    if (w === 0 || h === 0) return;
-    renderer.setSize(w, h);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-  }
-  resize();
-  new ResizeObserver(resize).observe(canvas);
-
-  const mtlLoader = new MTLLoader();
-  mtlLoader.setPath('assets/3d/');
-  mtlLoader.load('storm_cloud.mtl', (materials) => {
-    materials.preload();
-    const objLoader = new OBJLoader();
-    objLoader.setMaterials(materials);
-    objLoader.setPath('assets/3d/');
-    objLoader.load('storm_cloud.obj', (obj) => {
-      const box = new THREE.Box3().setFromObject(obj);
-      const center = box.getCenter(new THREE.Vector3());
-      const size = box.getSize(new THREE.Vector3());
-      const maxDim = Math.max(size.x, size.y, size.z);
-      const scale = 50 / maxDim;
-      obj.scale.setScalar(scale);
-      obj.position.sub(center.multiplyScalar(scale));
-
-      obj.traverse((child) => {
-        if (child.isMesh) {
-          child.material = new THREE.MeshStandardMaterial({
-            color: 0xc8d8e8,
-            roughness: 0.85,
-            metalness: 0.05,
-            transparent: true,
-            opacity: 0.9,
-          });
-        }
-      });
-
-      scene.add(obj);
-      cloud = obj;
-    });
-  });
-
-  let frame = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    frame += 0.003;
-    if (cloud) {
-      cloud.rotation.y = frame * 0.4;
-      cloud.rotation.x = Math.sin(frame * 0.3) * 0.08;
-      cloud.position.y = Math.sin(frame * 0.5) * 1.2;
-    }
-    renderer.render(scene, camera);
-  }
-  animate();
-</script>
-
 <script>
+  // Hide top chrome after scrolling down
+  const statusbar = document.querySelector('.statusbar');
+  const scrollChromeThreshold = 80;
+
+  function syncScrollChrome() {
+    if (statusbar) {
+      document.documentElement.style.setProperty('--statusbar-height', `${statusbar.offsetHeight}px`);
+    }
+    document.body.classList.toggle('hide-scroll-chrome', window.scrollY > scrollChromeThreshold);
+  }
+
+  syncScrollChrome();
+  window.addEventListener('scroll', syncScrollChrome, { passive: true });
+  window.addEventListener('resize', syncScrollChrome);
+
   // Hamburger menu
   const hamburgerBtn = document.getElementById('hamburger-btn');
   const navLinks = document.getElementById('nav-links');
@@ -1242,6 +594,311 @@
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  // Hero portrait parallax
+  const heroPortrait = document.querySelector('.hero-portrait img');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const mobileHero = window.matchMedia('(max-width: 820px)');
+  let parallaxQueued = false;
+
+  function updateHeroParallax() {
+    parallaxQueued = false;
+    if (!heroPortrait || reduceMotion.matches || mobileHero.matches) {
+      heroPortrait?.style.setProperty('--portrait-parallax', '0px');
+      return;
+    }
+
+    const rect = heroPortrait.getBoundingClientRect();
+    const viewportCenter = window.innerHeight / 2;
+    const imageCenter = rect.top + rect.height / 2;
+    const offset = Math.max(-28, Math.min(28, (viewportCenter - imageCenter) * 0.07));
+    heroPortrait.style.setProperty('--portrait-parallax', `${offset.toFixed(2)}px`);
+  }
+
+  function requestHeroParallax() {
+    if (parallaxQueued) return;
+    parallaxQueued = true;
+    requestAnimationFrame(updateHeroParallax);
+  }
+
+  updateHeroParallax();
+  window.addEventListener('scroll', requestHeroParallax, { passive: true });
+  window.addEventListener('resize', requestHeroParallax);
+  reduceMotion.addEventListener?.('change', updateHeroParallax);
+  mobileHero.addEventListener?.('change', updateHeroParallax);
+
+  // Expand trajectory cards
+  const trajectoryGrid = document.querySelector('.traj-grid');
+  if (trajectoryGrid) {
+    const trajectoryCells = Array.from(trajectoryGrid.querySelectorAll('.traj-cell'));
+
+    function collapseTrajectoryCards(focusCell = null) {
+      trajectoryGrid.classList.remove('has-expanded');
+      trajectoryCells.forEach((cell) => {
+        cell.classList.remove('is-expanded');
+        cell.setAttribute('aria-expanded', 'false');
+        cell.setAttribute('aria-hidden', 'false');
+      });
+      focusCell?.focus();
+    }
+
+    function expandTrajectoryCard(cell) {
+      trajectoryGrid.classList.add('has-expanded');
+      trajectoryCells.forEach((item) => {
+        const expanded = item === cell;
+        item.classList.toggle('is-expanded', expanded);
+        item.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        item.setAttribute('aria-hidden', expanded ? 'false' : 'true');
+      });
+    }
+
+    trajectoryCells.forEach((cell) => {
+      cell.tabIndex = 0;
+      cell.setAttribute('role', 'button');
+      cell.setAttribute('aria-expanded', 'false');
+      cell.setAttribute('aria-hidden', 'false');
+
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'traj-expand-close';
+      closeBtn.type = 'button';
+      closeBtn.textContent = '×';
+      closeBtn.setAttribute('aria-label', 'Show all education and experience boxes');
+      cell.appendChild(closeBtn);
+
+      cell.addEventListener('click', (event) => {
+        if (event.target instanceof Element && event.target.closest('button, a')) return;
+        if (!cell.classList.contains('is-expanded')) {
+          expandTrajectoryCard(cell);
+        }
+      });
+
+      cell.addEventListener('keydown', (event) => {
+        if (event.target !== cell) return;
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          expandTrajectoryCard(cell);
+        }
+      });
+
+      closeBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        collapseTrajectoryCards(cell);
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && trajectoryGrid.classList.contains('has-expanded')) {
+        collapseTrajectoryCards(trajectoryGrid.querySelector('.traj-cell.is-expanded'));
+      }
+    });
+  }
+
+  // Rotate trajectory keywords four at a time
+  document.querySelectorAll('.traj-keywords').forEach((list, listIndex) => {
+    const keywords = Array.from(list.querySelectorAll('li'));
+    const groupSize = 4;
+    const groupCount = Math.ceil(keywords.length / groupSize);
+    if (keywords.length <= groupSize) return;
+
+    let currentGroup = 0;
+    let isPaused = false;
+    list.classList.add('is-keyword-carousel');
+    const dotWrap = document.createElement('div');
+    dotWrap.className = 'traj-keyword-dots';
+    dotWrap.setAttribute('aria-label', 'Keyword carousel controls');
+    list.insertAdjacentElement('afterend', dotWrap);
+    const dots = Array.from({ length: groupCount }, (_, index) => {
+      const dot = document.createElement('button');
+      dot.className = 'traj-keyword-dot';
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `Show keyword group ${index + 1}`);
+      dot.addEventListener('click', () => {
+        if (index === currentGroup) return;
+        list.classList.add('is-swapping');
+        window.setTimeout(() => {
+          showKeywordGroup(index);
+          list.classList.remove('is-swapping');
+        }, 280);
+      });
+      dotWrap.appendChild(dot);
+      return dot;
+    });
+
+    function showKeywordGroup(group = currentGroup) {
+      currentGroup = group;
+      keywords.forEach((keyword, index) => {
+        const relative = index - currentGroup * groupSize;
+        keyword.classList.toggle('is-visible', relative >= 0 && relative < groupSize);
+      });
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('is-active', index === currentGroup);
+        dot.setAttribute('aria-pressed', index === currentGroup ? 'true' : 'false');
+      });
+    }
+
+    const pauseTarget = list.closest('.traj-cell') || list;
+    pauseTarget.addEventListener('mouseenter', () => {
+      isPaused = true;
+    });
+    pauseTarget.addEventListener('mouseleave', () => {
+      isPaused = false;
+    });
+    pauseTarget.addEventListener('focusin', () => {
+      isPaused = true;
+    });
+    pauseTarget.addEventListener('focusout', (event) => {
+      if (!pauseTarget.contains(event.relatedTarget)) {
+        isPaused = false;
+      }
+    });
+
+    showKeywordGroup();
+    function rotateKeywordGroup() {
+      if (isPaused || pauseTarget.classList.contains('is-expanded')) return;
+      list.classList.add('is-swapping');
+      window.setTimeout(() => {
+        showKeywordGroup((currentGroup + 1) % groupCount);
+        list.classList.remove('is-swapping');
+      }, 280);
+    }
+
+    window.setTimeout(() => {
+      rotateKeywordGroup();
+      setInterval(rotateKeywordGroup, 2800);
+    }, 2600 + listIndex * 220);
+  });
+
+  // Expand skills cards
+  const skillsGrid = document.querySelector('.skill-showcase');
+  if (skillsGrid) {
+    const skillCards = Array.from(skillsGrid.querySelectorAll('.skill-card'));
+
+    function collapseSkillCards(focusCard = null) {
+      skillsGrid.classList.remove('has-expanded');
+      skillCards.forEach((card) => {
+        card.classList.remove('is-expanded');
+        card.setAttribute('aria-expanded', 'false');
+        card.setAttribute('aria-hidden', 'false');
+      });
+      focusCard?.focus();
+    }
+
+    function expandSkillCard(card) {
+      skillsGrid.classList.add('has-expanded');
+      skillCards.forEach((item) => {
+        const expanded = item === card;
+        item.classList.toggle('is-expanded', expanded);
+        item.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        item.setAttribute('aria-hidden', expanded ? 'false' : 'true');
+      });
+    }
+
+    skillCards.forEach((card) => {
+      card.tabIndex = 0;
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-expanded', 'false');
+      card.setAttribute('aria-hidden', 'false');
+
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'skill-expand-close';
+      closeBtn.type = 'button';
+      closeBtn.textContent = '×';
+      closeBtn.setAttribute('aria-label', 'Show all skill categories');
+      card.appendChild(closeBtn);
+
+      card.addEventListener('click', (event) => {
+        if (event.target instanceof Element && event.target.closest('button, a')) return;
+        if (!card.classList.contains('is-expanded')) {
+          expandSkillCard(card);
+        }
+      });
+
+      card.addEventListener('keydown', (event) => {
+        if (event.target !== card) return;
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          expandSkillCard(card);
+        }
+      });
+
+      closeBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        collapseSkillCards(card);
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && skillsGrid.classList.contains('has-expanded')) {
+        collapseSkillCards(skillsGrid.querySelector('.skill-card.is-expanded'));
+      }
+    });
+  }
+
+  // Share portfolio
+  const sharePortfolioBtn = document.getElementById('share-portfolio');
+  if (sharePortfolioBtn) {
+    const originalShareLabel = sharePortfolioBtn.textContent;
+    const shareData = {
+      title: 'Brandon Leon Flores | Information Technology Student',
+      text: 'Portfolio of Brandon Leon Flores, an NJIT Information Technology student building practical web systems for real business problems.',
+      url: 'https://bleonflores1.com/'
+    };
+
+    function flashShareLabel(message) {
+      sharePortfolioBtn.textContent = message;
+      window.setTimeout(() => {
+        sharePortfolioBtn.textContent = originalShareLabel;
+      }, 2200);
+    }
+
+    sharePortfolioBtn.addEventListener('click', async () => {
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+          return;
+        }
+
+        const shareText = `${shareData.title}\n${shareData.text}\n${shareData.url}`;
+        await navigator.clipboard.writeText(shareText);
+        flashShareLabel('Copied Link');
+      } catch (error) {
+        if (error.name === 'AbortError') return;
+        window.prompt('Copy portfolio link:', shareData.url);
+      }
+    });
+  }
+
+  // Project media carousels
+  document.querySelectorAll('[data-project-carousel]').forEach((carousel) => {
+    const slides = Array.from(carousel.querySelectorAll('[data-project-slide]'));
+    const dots = Array.from(carousel.querySelectorAll('[data-project-slide-to]'));
+    const prev = carousel.querySelector('[data-project-slide-prev]');
+    const next = carousel.querySelector('[data-project-slide-next]');
+    let current = slides.findIndex((slide) => slide.classList.contains('is-active'));
+    if (current < 0) current = 0;
+
+    function showProjectSlide(index) {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        const active = slideIndex === current;
+        slide.classList.toggle('is-active', active);
+        slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+        slide.tabIndex = active ? 0 : -1;
+      });
+      dots.forEach((dot, dotIndex) => {
+        const active = dotIndex === current;
+        dot.classList.toggle('is-active', active);
+        dot.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    }
+
+    prev?.addEventListener('click', () => showProjectSlide(current - 1));
+    next?.addEventListener('click', () => showProjectSlide(current + 1));
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => showProjectSlide(Number(dot.dataset.projectSlideTo)));
+    });
+    showProjectSlide(current);
+  });
 
   // Smooth scroll for nav (already handled by CSS scroll-behavior, but offset for sticky bars)
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
