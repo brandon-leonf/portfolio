@@ -970,14 +970,6 @@
     text-decoration: none;
     transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
   }
-  .project-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(circle at 92% 15%, rgba(230, 237, 243, 0.08), transparent 12rem);
-    opacity: 0.45;
-  }
   .project-card > * {
     position: relative;
     z-index: 1;
