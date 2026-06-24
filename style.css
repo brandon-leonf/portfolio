@@ -113,9 +113,10 @@
     transform: translateY(-100%);
   }
   body.hide-scroll-chrome nav.primary {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(calc(-100% - var(--statusbar-height, 34px)));
+    top: 0;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
   }
   .nav-inner {
     max-width: var(--maxw);
@@ -894,6 +895,21 @@
     background: #1d2935;
     border-color: #52647a;
     transform: translateY(-1px);
+  }
+  .skill-chip-progress {
+    gap: 0.58rem;
+  }
+  .skill-note {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.18rem 0.42rem;
+    border: 1px solid rgba(212, 162, 74, 0.5);
+    color: var(--amber);
+    font-size: 0.52rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
   }
   .skill-icon {
     display: block;
