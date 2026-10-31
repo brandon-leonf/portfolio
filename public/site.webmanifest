@@ -1,0 +1,21 @@
+{
+  "name": "Brandon Leon Portfolio",
+  "short_name": "Brandon Portfolio",
+  "description": "Portfolio website for Brandon Leon.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#050505",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+[build.environment]
+  VITE_SITE_URL = "https://bleonflores1.com"
+
+[[redirects]]
+  from = "https://www.bleonflores1.com/*"
+  to = "https://bleonflores1.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://bleonflores1.com/*"
+  to = "https://bleonflores1.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [context.deploy-preview.headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/*"
+  [context.branch-deploy.headers.values]
+    X-Robots-Tag = "noindex, nofollow"
