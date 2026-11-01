@@ -271,6 +271,11 @@ function normalizePathname(pathname) {
   return trimmed || "/";
 }
 
+function darkModeForCurrentTime() {
+  const hour = new Date().getHours();
+  return hour >= 19 || hour < 7;
+}
+
 function App() {
   const { pathname } = useLocation();
   const [showEntrance, setShowEntrance] = useState(() => window.location.pathname === "/" && !window.location.hash);
@@ -283,6 +288,7 @@ function App() {
   }, [showEntrance]);
   const navigate = useNavigate();
   const logoClickTimer = useRef(null);
+  const manualTheme = useRef(false);
 
   useEffect(() => () => clearTimeout(logoClickTimer.current), []);
 
@@ -293,6 +299,7 @@ function App() {
     if (logoClickTimer.current !== null) {
       clearTimeout(logoClickTimer.current);
       logoClickTimer.current = null;
+      manualTheme.current = true;
       setIsDarkMode((dark) => !dark);
       return;
     }
@@ -311,10 +318,27 @@ function App() {
   function handleLogoKeyDown(event) {
     if (event.key === " " || (event.key === "Enter" && event.shiftKey)) {
       event.preventDefault();
+      manualTheme.current = true;
       setIsDarkMode((dark) => !dark);
     }
   }
-  const [isDarkMode, setIsDarkMode] = useState(() => new URLSearchParams(window.location.search).get("theme") !== "light");
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const theme = new URLSearchParams(window.location.search).get("theme");
+    return theme === "dark" || (theme !== "light" && darkModeForCurrentTime());
+  });
+  useEffect(() => {
+    const pinnedTheme = new URLSearchParams(window.location.search).get("theme");
+    if (pinnedTheme === "light" || pinnedTheme === "dark") return;
+    const updateTheme = () => {
+      if (!manualTheme.current) setIsDarkMode(darkModeForCurrentTime());
+    };
+    const interval = setInterval(updateTheme, 60000);
+    document.addEventListener("visibilitychange", updateTheme);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", updateTheme);
+    };
+  }, []);
   const [isLogoAnimating, setIsLogoAnimating] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeProjectVideo, setActiveProjectVideo] = useState(null);
