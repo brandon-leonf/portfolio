@@ -1,31 +1,35 @@
 import "./App.css";
+import AboutTitle from "./AboutTitle";
+import CodeLabel from "./CodeLabel";
+import LogoCover from "./LogoCover";
+import MobileParticleLogo from "./MobileParticleLogo";
+import ProfileParticles from "./ProfileParticles";
+import ParticlePortrait from "./ParticlePortrait";
 import { useEffect, useRef, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import logo from "./assets/logo.png";
+import heroPortrait from "./assets/hero-portrait.jpg";
 import cParserImg from "./assets/C_parcer.png";
 import arcadePongImg from "./assets/Arcade_Pong.png";
 import arkanoidImg from "./assets/Arcanoid.png";
-import brookdaleImg from "./assets/brookdale-community-college.jpg";
 import corePanelThumbImg from "./assets/corepanel-thumb.jpg";
 import corePanelDemoVideo from "./assets/corepanel-demo.mp4";
 
 const SITE_URL = (import.meta.env.VITE_SITE_URL || "https://bleonflores1.com").replace(/\/$/, "");
 const CANONICAL_HOST = import.meta.env.VITE_CANONICAL_HOST || "";
 const DEFAULT_ROBOTS = "index,follow";
-const ROLE_TEXT = "Developer & Student at NJIT";
+const ROLE_TEXT = "Senior Student at NJIT";
 const DECODE_CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-const NIGHT_START_HOUR = 19;
-const DAY_START_HOUR = 7;
 
 const ROUTES = [
-  { id: "about", label: "ABOUT", index: "01", path: "/about" },
-  { id: "education", label: "EDUCATION", index: "02", path: "/education" },
-  { id: "experience", label: "EXPERIENCE", index: "03", path: "/experience" },
-  { id: "projects", label: "PROJECTS", index: "04", path: "/projects" },
-  { id: "contact", label: "CONTACT", index: "05", path: "/contact" },
+  { id: "about", label: "ABOUT", path: "/about" },
+  { id: "education", label: "EDUCATION", path: "/education" },
+  { id: "experience", label: "EXPERIENCE", path: "/experience" },
+  { id: "projects", label: "PROJECTS", path: "/projects" },
+  { id: "contact", label: "CONTACT", path: "/contact" },
 ];
 const NAV_LABELS = ROUTES.reduce((acc, section) => {
-  acc[section.id] = `${section.index}. ${section.label}`;
+  acc[section.id] = section.label;
   return acc;
 }, {});
 
@@ -80,7 +84,7 @@ const EXPERIENCE = [
     org: "Industry Media",
     title: "Web Developer / Web Designer",
     body:
-      "Develop and maintain wordpress sites, ensure speed, hosting reliability, implement SEO. Diagnose and resolve server-level bottlenecks affecting load times and responsiveness. Investigate and mitigate performance issues caused by plugin conflicts, excessive scripts, and inefficient configurations. implement structured data schema markup and optimize asset delivery. Perform file-level edits via SFTP in live environments and manage plugin/core updates. Contribute to maintaining 99.9% uptime across client websites",
+      "Develop and maintain WordPress websites, optimizing performance, hosting reliability, and search engine visibility. Diagnose and resolve server-level bottlenecks affecting page load times and responsiveness. Troubleshoot plugin conflicts, excessive scripts, and inefficient configurations to improve website performance. Implement structured data, optimize asset delivery, and perform file-level modifications via SFTP in live production environments. Manage WordPress core and plugin updates while contributing to 99.9% uptime across client websites.",
     tags: [
       "WORDPRESS",
       "SFTP",
@@ -90,10 +94,10 @@ const EXPERIENCE = [
   },
   {
     range: "2022 — 2023",
-    org: "Web Services Group",
+    org: "Smart Marketing",
     title: "Web Designer",
     body:
-      "Created responsive websites and marketing pages with a focus on clean layouts and conversion.",
+      "Designed and developed responsive websites and marketing landing pages, focusing on clean layouts, intuitive navigation, and user experience across desktop and mobile devices. Used HTML and CSS to customize website structures, styling, and visual elements while maintaining consistent branding.",
     tags: ["Web Design", "HTML/CSS", "SEO"],
   },
 ];
@@ -102,14 +106,14 @@ const EDUCATION = [
   {
     range: "2023 — 2026",
     org: "New Jersey Institute of Technology",
-    title: "B.S. in Computer Science (Network Specialization)",
+    title: "B.S. in Information Technology",
     body: "Relevant Coursework:",
     tags: [
       "OPERATING SYSTEMS",
       "COMPUTER NETWORKS",
       "DATABASE SYSTEM DESIGN",
       "PROGRAMMING LANGUAGE CONCEPTS",
-      "DATA STRUCTURES",
+      "LINUX",
       "FOUNDATIONS OF COMPUTER SCIENCE",
       "PROBABILITY & STATISTICS",
     ],
@@ -130,7 +134,10 @@ const EDUCATION = [
 
 const PROJECTS = [
   {
-    name: "CorePanel - Secure Business Dashboard",
+    name: "CorePanel",
+    category: "Full-stack application",
+    headline: "A central workspace for business operations.",
+    problem: "Bring users, client projects, and business documents into one secure admin and client dashboard.",
     date: "2/27/2026",
     body:
       "CorePanel is a project that I implemented, it has a full featured admin and client dashboard system with CRUD functionality for users, projects, images, PDF's and receipts. It has CSRF protection, activity logging, and is deployed on SiteGround hosting.",
@@ -140,7 +147,10 @@ const PROJECTS = [
     video: corePanelDemoVideo,
   },
   {
-    name: "Mini C-Like (MCL) Programming Language",
+    name: "Mini C-Like",
+    category: "Language & systems",
+    headline: "From source code to execution.",
+    problem: "Explore how a programming language turns source text into validated, executable instructions.",
     date: "11/16/2024",
     body:
       "Designed and implemented a recursive-descent compiler in C++ that performs lexical analysis, syntax parsing, semantic validation, and runtime execution.",
@@ -150,6 +160,9 @@ const PROJECTS = [
   },
   {
     name: "Arcade Pong",
+    category: "Interactive experience",
+    headline: "A classic game, built for responsive play.",
+    problem: "Recreate the familiar Pong experience with responsive controls and a clear interface.",
     date: "3/16/2021",
     body:
       "A Unity-built arcade pong experience with a clean UI and responsive gameplay.",
@@ -159,6 +172,9 @@ const PROJECTS = [
   },
   {
     name: "Arkanoid",
+    category: "Interactive experience",
+    headline: "Rebuilding a retro arcade experience.",
+    problem: "Translate a classic brick-breaking game into a playable Unity project with crisp visuals and responsive controls.",
     date: "5/8/2022",
     body:
       "A retro-inspired Arkanoid build with crisp visuals and responsive controls.",
@@ -250,11 +266,6 @@ function buildSchema(pathname, canonicalUrl) {
   };
 }
 
-function shouldUseDarkModeByTime(now = new Date()) {
-  const hour = now.getHours();
-  return hour >= NIGHT_START_HOUR || hour < DAY_START_HOUR;
-}
-
 function normalizePathname(pathname) {
   const trimmed = pathname.replace(/\/+$/, "");
   return trimmed || "/";
@@ -262,9 +273,49 @@ function normalizePathname(pathname) {
 
 function App() {
   const { pathname } = useLocation();
-  const [isDarkMode, setIsDarkMode] = useState(() => shouldUseDarkModeByTime());
+  const [showEntrance, setShowEntrance] = useState(() => window.location.pathname === "/" && !window.location.hash);
+  useEffect(() => {
+    if (!showEntrance) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previous; };
+  }, [showEntrance]);
+  const navigate = useNavigate();
+  const logoClickTimer = useRef(null);
+
+  useEffect(() => () => clearTimeout(logoClickTimer.current), []);
+
+  function handleLogoClick(event) {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    setIsMobileMenuOpen(false);
+    if (logoClickTimer.current !== null) {
+      clearTimeout(logoClickTimer.current);
+      logoClickTimer.current = null;
+      setIsDarkMode((dark) => !dark);
+      return;
+    }
+    if (event.detail === 0) {
+      navigate("/");
+      document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    logoClickTimer.current = setTimeout(() => {
+      logoClickTimer.current = null;
+      navigate("/");
+      document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+    }, 350);
+  }
+
+  function handleLogoKeyDown(event) {
+    if (event.key === " " || (event.key === "Enter" && event.shiftKey)) {
+      event.preventDefault();
+      setIsDarkMode((dark) => !dark);
+    }
+  }
+  const [isDarkMode, setIsDarkMode] = useState(() => new URLSearchParams(window.location.search).get("theme") !== "light");
   const [isLogoAnimating, setIsLogoAnimating] = useState(false);
-  const [isDegreePreviewOpen, setIsDegreePreviewOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeProjectVideo, setActiveProjectVideo] = useState(null);
   const [roleText, setRoleText] = useState(ROLE_TEXT);
   const [navDecodeText, setNavDecodeText] = useState(NAV_LABELS);
@@ -278,7 +329,7 @@ function App() {
   const seoPath = isKnownRoute ? normalizedPathname : "/404";
   const activeRouteMeta = ROUTE_META[seoPath];
   const activeSectionId = activeRouteMeta.id;
-  const activeSection = ROUTES.find((section) => section.id === activeSectionId);
+  const [scrollSection, setScrollSection] = useState("about");
   const canonicalUrl = `${SITE_URL}${seoPath === "/" ? "/" : seoPath}`;
 
   useEffect(() => {
@@ -293,11 +344,9 @@ function App() {
     upsertMeta('meta[property="og:description"]', "property", "og:description", description);
     upsertMeta('meta[property="og:type"]', "property", "og:type", "website");
     upsertMeta('meta[property="og:url"]', "property", "og:url", canonicalUrl);
-    upsertMeta('meta[property="og:image"]', "property", "og:image", `${SITE_URL}/og.png`);
-    upsertMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary_large_image");
+    upsertMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary");
     upsertMeta('meta[name="twitter:title"]', "name", "twitter:title", title);
     upsertMeta('meta[name="twitter:description"]', "name", "twitter:description", description);
-    upsertMeta('meta[name="twitter:image"]', "name", "twitter:image", `${SITE_URL}/og.png`);
     upsertCanonical(canonicalUrl);
     upsertSchema(buildSchema(seoPath, canonicalUrl));
     document.dispatchEvent(new Event("route-seo-ready"));
@@ -309,9 +358,12 @@ function App() {
       return;
     }
 
-    setIsLogoAnimating(true);
+    const frameId = requestAnimationFrame(() => setIsLogoAnimating(true));
     const timeoutId = setTimeout(() => setIsLogoAnimating(false), 500);
-    return () => clearTimeout(timeoutId);
+    return () => {
+      cancelAnimationFrame(frameId);
+      clearTimeout(timeoutId);
+    };
   }, [isDarkMode]);
 
   useEffect(() => {
@@ -396,32 +448,70 @@ function App() {
     };
   }, []);
 
-  const handleContactSubmit = (event) => {
-    event.preventDefault();
 
-    const form = event.currentTarget;
-    const honeypotValue = form.elements.company?.value?.trim();
+  useEffect(() => {
+    if (window.location.pathname === "/" && !window.location.hash) return;
+    const target = window.location.hash.slice(1) || activeSectionId;
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(target)?.scrollIntoView({ behavior: "instant", block: "start" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [activeSectionId]);
 
-    if (honeypotValue) {
-      return;
-    }
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) setScrollSection(entry.target.id);
+      }
+    }, { rootMargin: "-10% 0px -65% 0px", threshold: 0 });
+    document.querySelectorAll(".scroll-section").forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
 
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return;
-    }
+  useEffect(() => {
+    const headers = document.querySelectorAll(".scroll-section .section-header");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("divider-revealed");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -24px 0px" });
+    headers.forEach((header) => observer.observe(header));
+    return () => observer.disconnect();
+  }, []);
 
-    const name = form.elements.name.value.trim();
-    const email = form.elements.email.value.trim();
-    const message = form.elements.message.value.trim();
+  useEffect(() => {
+    const cards = [...document.querySelectorAll(".case-study")];
+    const update = () => {
+      cards.forEach((card) => {
+        const top = Math.min(24, window.innerHeight - card.offsetHeight - 24);
+        card.style.setProperty("--project-sticky-top", `${top}px`);
+      });
+    };
+    const resize = new ResizeObserver(update);
+    cards.forEach((card) => resize.observe(card));
+    window.addEventListener("resize", update);
+    update();
+    return () => {
+      resize.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
-    const subject = encodeURIComponent(`Portfolio Contact Form - ${name}`);
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
-    );
+  useEffect(() => {
+    const lines = document.querySelectorAll(".case-study-meta, .case-study-tags, .case-study-narrative");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("project-line-drawn");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0, rootMargin: "0px 0px -20px 0px" });
+    lines.forEach((line) => observer.observe(line));
+    return () => observer.disconnect();
+  }, []);
 
-    window.location.href = `mailto:leonfloresbrandon@gmail.com?subject=${subject}&body=${body}`;
-  };
 
   useEffect(() => {
     const { hostname, protocol, pathname: pathName, search, hash } = window.location;
@@ -937,13 +1027,29 @@ function App() {
           <div className="video-background__overlay" />
         </div>
       )}
-      <canvas ref={energyCanvasRef} className="interactive-energy" aria-hidden="true" />
-      <main className="resume">
+      {showEntrance && <LogoCover onComplete={() => setShowEntrance(false)} />}
+      <main className="resume" inert={showEntrance}>
+          <div className="electric-divider" aria-hidden="true">
+            {Array.from({ length: 20 }, (_, index) => (
+              <span key={index} style={{ "--segment": index }} />
+            ))}
+          </div>
+
         <aside className="left">
-          <div className="brand">
-            <div className="logo">
-              <img src={logo} alt="Brandon Leon logo" />
+          <div className="profile-header">
+            <ProfileParticles />
+          <div className="portrait-card">
+            <div className="portrait-crop">
+              <ParticlePortrait src={heroPortrait} />
             </div>
+          </div>
+
+          <div className="brand">
+            <NavLink to="/" className="logo" onClick={handleLogoClick} onKeyDown={handleLogoKeyDown}
+              aria-label="Home; double-click or press Space to switch light and dark mode"
+              title="Click for home · Double-click to switch theme">
+              <img src={logo} alt="Brandon Leon logo" />
+            </NavLink>
             <div className="identity">
               <h1>Brandon Leon</h1>
               <p className="role" aria-label={ROLE_TEXT}>
@@ -952,148 +1058,150 @@ function App() {
             </div>
           </div>
 
+          </div>
+
           <p className="intro">
-            Hi, I&apos;m Brandon Leon. I hold an{" "}
-            <span
-              className={`degree-preview-wrap ${isDegreePreviewOpen ? "open" : ""}`}
-              onMouseEnter={() => setIsDegreePreviewOpen(true)}
-              onMouseLeave={() => setIsDegreePreviewOpen(false)}
-            >
-              <button
-                type="button"
-                className="degree-preview-trigger"
-                aria-expanded={isDegreePreviewOpen}
-                aria-label="Show Brookdale Community College image"
-                onClick={() => setIsDegreePreviewOpen((prev) => !prev)}
-              >
-                Associate&apos;s in Computer Science
-              </button>
-              <span className="degree-preview" role="tooltip">
-                <img
-                  src={brookdaleImg}
-                  alt="brookdale community college in lincroft NJ"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </span>
+            <span className="degree-preview-trigger degree-text">
+              Associate&apos;s in Computer Science
             </span>{" "}
-            and am currently completing my Bachelor&apos;s in Information
+            and currently completing my Bachelor&apos;s in Information
             Technology at NJIT.
           </p>
 
-          <label className="theme-toggle">
-            <span>Dark Mode</span>
-            <input
-              type="checkbox"
-              role="switch"
-              aria-label="Toggle dark mode"
-              checked={isDarkMode}
-              onChange={(event) => setIsDarkMode(event.target.checked)}
-            />
-          </label>
+          <div className="navigation" onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              setIsMobileMenuOpen(false);
+              event.currentTarget.querySelector(".menu-toggle")?.focus();
+            }
+          }}>
+          <div className="navigation-toolbar">
+          <NavLink to="/" className="mobile-navbar-logo" onClick={handleLogoClick} onKeyDown={handleLogoKeyDown}
+            aria-label="Home; double-click or press Space to switch light and dark mode"
+            title="Click for home · Double-click to switch theme">
+            <MobileParticleLogo />
+          </NavLink>
 
-          <div className="section-labels" role="tablist" aria-label="Sections">
-            {ROUTES.map((section) => (
-              <NavLink
-                key={section.id}
-                to={section.path}
-                className="section-link"
-                role="tab"
-                aria-selected={activeSectionId === section.id}
-              >
-                {navDecodeText[section.id]}
-              </NavLink>
-            ))}
+          <button
+            type="button"
+            className={`menu-toggle ${isMobileMenuOpen ? "is-open" : ""}`}
+            aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="navigation-panel"
+            onClick={() => setIsMobileMenuOpen((open) => !open)}
+          >
+            <span className="menu-close-label" aria-hidden="true">Close</span>
+            <svg className="menu-drawing" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+              <path className="menu-frame" d="M1 1 H35 V35 H1 Z" />
+              <path className="menu-line menu-line-top" d="M9 11 H27" />
+              <path className="menu-line menu-line-middle" d="M9 18 H27" />
+              <path className="menu-line menu-line-bottom" d="M9 25 H27" />
+              <path className="menu-close-mark" d="M3 18 H33 M33 3 V33" />
+            </svg>
+          </button>
           </div>
-
-          <div className="socials">
+          <div id="navigation-panel" className={`navigation-panel ${isMobileMenuOpen ? "is-open" : ""}`}>
+          <nav id="section-navigation" className="section-labels" aria-label="Sections">
+            {ROUTES.map((section) => (
+              <a
+                key={section.id}
+                href={`#${section.id}`}
+                aria-current={scrollSection === section.id ? "location" : undefined}
+                className={`section-link ${scrollSection === section.id ? "active" : ""}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <svg className="nav-dash" viewBox="0 0 18 12" fill="none" aria-hidden="true">
+                  <path d="M1 6 H17" />
+                </svg>
+                {navDecodeText[section.id].replace(/^\d+\.\s*/, "")}
+              </a>
+            ))}
+          </nav>
+          <div className="socials mobile-socials">
             <a aria-label="GitHub" href="https://github.com/brandon-leonf" className="social">
-              <i className="bi bi-github" aria-hidden="true" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M9 19c-4.3 1.3-4.3-2.2-6-2.7M15 22v-3.4a3 3 0 0 0-.8-2.3c2.7-.3 5.6-1.3 5.6-6A4.7 4.7 0 0 0 18.5 7a4.4 4.4 0 0 0-.1-3.3s-1-.3-3.4 1.3a11.7 11.7 0 0 0-6 0C6.6 3.4 5.6 3.7 5.6 3.7A4.4 4.4 0 0 0 5.5 7a4.7 4.7 0 0 0-1.3 3.3c0 4.7 2.9 5.7 5.6 6a3 3 0 0 0-.8 2.3V22" />
+              </svg>
             </a>
             <a
               aria-label="LinkedIn"
               href="https://www.linkedin.com/in/brandonleonflores"
               className="social"
             >
-              <i className="bi bi-linkedin" aria-hidden="true" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect x="3" y="9" width="4" height="12" rx="0.5" />
+                <circle cx="5" cy="4" r="2" />
+                <path d="M11 21V9h4v1.7a4 4 0 0 1 7 2.8V21h-4v-7a1.5 1.5 0 0 0-3 0v7z" />
+              </svg>
+            </a>
+          </div>
+          </div>
+          </div>
+
+          <div className="socials desktop-socials">
+            <a aria-label="GitHub" href="https://github.com/brandon-leonf" className="social">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M9 19c-4.3 1.3-4.3-2.2-6-2.7M15 22v-3.4a3 3 0 0 0-.8-2.3c2.7-.3 5.6-1.3 5.6-6A4.7 4.7 0 0 0 18.5 7a4.4 4.4 0 0 0-.1-3.3s-1-.3-3.4 1.3a11.7 11.7 0 0 0-6 0C6.6 3.4 5.6 3.7 5.6 3.7A4.4 4.4 0 0 0 5.5 7a4.7 4.7 0 0 0-1.3 3.3c0 4.7 2.9 5.7 5.6 6a3 3 0 0 0-.8 2.3V22" />
+              </svg>
+              <span>/brandon-leonf</span>
+            </a>
+            <a
+              aria-label="LinkedIn"
+              href="https://www.linkedin.com/in/brandonleonflores"
+              className="social"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect x="3" y="9" width="4" height="12" rx="0.5" />
+                <circle cx="5" cy="4" r="2" />
+                <path d="M11 21V9h4v1.7a4 4 0 0 1 7 2.8V21h-4v-7a1.5 1.5 0 0 0-3 0v7z" />
+              </svg>
+              <span>/brandonleonflores</span>
             </a>
           </div>
         </aside>
 
         <section className="right">
-          <header className="section-header">
-            {activeSectionId === "notfound" ? (
-              <>
-                <span className="section-kicker">404. PAGE NOT FOUND</span>
-                <h2 className="section-title">PAGE NOT FOUND</h2>
-              </>
-            ) : (
-              <>
-                <span className="section-kicker">
-                  {activeSection?.index}. {activeSection?.label}
-                </span>
-                <h2 className="section-title">{activeSection?.label}</h2>
-              </>
-            )}
-          </header>
-
-          {activeSectionId === "notfound" && (
-            <div className="contact" role="tabpanel">
+          <section id="about" className="scroll-section" aria-labelledby="about-title">
+            <header className="section-header">
+              <span className="section-kicker">Red Bank New Jersey, USA</span>
+              <AboutTitle />
+            </header>
+            <div className="about" >
+              <div className="about-copy">
+                <h4 className="about-statement">From <span className="statement-concept">concept</span> to code. From code to <span className="statement-impact">impact.</span></h4>
               <p className="summary">
-                The page you requested does not exist. Use the navigation to
-                continue browsing this portfolio.
-              </p>
-            </div>
-          )}
-
-          {activeSectionId === "about" && (
-            <div className="about" role="tabpanel">
-              <p className="summary">
-                I am an Information Technology student at the New Jersey
-                Institute of Technology (NJIT) with a focused interest in cloud
-                infrastructure and network systems.
+                I&apos;m a senior at the New Jersey Institute of Technology,
+                pursuing a Bachelor&apos;s degree in Information Technology with a
+                focus on Software Development and Networking.
               </p>
               <p className="summary">
-                Currently, I work at Industry Media, where I develop and
-                maintain websites that are fully responsive, SEO-optimized
-                across digital platforms. Balancing school and work, I
-                developed a foundational understanding of TCP/IP, DNS, SSL/TLS,
-                and performance bottlenecks on websites -- essential components
-                of modern web applications.
+                I enjoy transforming ideas into functional applications that solve
+                real-world problems. From designing interfaces to developing backend
+                functionality, I find satisfaction in building complete software
+                solutions that people can use.
               </p>
               <p className="summary">
-                In addition, I have experience with Bash scripting, Git version
-                control, and backend programming primarily in Java. My approach
-                to engineering extends beyond building applications -- I
-                prioritize understanding how systems are built, deployed, and
-                optimized.
+                With a foundation in Computer Science and an Information Technology
+                education, I approach development with both creativity and technical
+                understanding.
               </p>
               <p className="summary">
-                As AI continues to accelerate software development, I believe it
-                is increasingly important to understand the underlying systems,
-                network architecture, and implementation details that power
-                scalable and secure applications.
+                What drives me is more than writing code. It&apos;s the challenge of
+                solving complex problems, understanding how systems connect, and
+                creating technology that makes a lasting impact.
               </p>
-              <p className="summary">
-                I am actively pursuing opportunities in{" "}
-                <u>Cloud Engineering</u>, <u>Network Engineering</u>, and{" "}
-                <u>DevOps</u>, where I can contribute to building reliable and
-                high-performance systems.
-              </p>
+              </div>
               <div className="about-grid">
                 <div>
                   <h3 className="tag-group-heading">Focus</h3>
                   <div className="tags">
                     {[
-                      "Linux Systems",
-                      "Web Infrastructure",
+                      "Software Development",
+                      "Full-Stack Applications",
+                      "Mobile Development",
+                      "Backend Development",
+                      "Database Systems",
                       "Networking",
-                      "Fundamentals (TCP/IP, DNS)",
-                      "Server Configuration",
-                      "Performance Optimization",
-                      "Scripting & Automation",
-                      "Database Fundamentals",
-                      "Systems Reliability",
+                      "Linux & Systems",
                     ].map((tag) => (
                       <span key={tag} tabIndex={0}>
                         {tag}
@@ -1105,18 +1213,15 @@ function App() {
                   <h3 className="tag-group-heading">Tools</h3>
                   <div className="tags">
                     {[
-                      "Linux",
-                      "Bash",
-                      "git",
-                      "wordpress",
-                      "Apache",
-                      "FileZilla",
-                      "Mysql",
                       "Java",
                       "Python",
-                      "PHP",
-                      "DNS & SSL configuration",
-                      "TCP/IP Fundamentals",
+                      "JavaScript",
+                      "React",
+                      "Flutter",
+                      "SQL",
+                      "Linux",
+                      "Bash",
+                      "Git",
                     ].map((tag) => (
                       <span key={tag} tabIndex={0}>
                         {tag}
@@ -1126,36 +1231,14 @@ function App() {
                 </div>
               </div>
             </div>
-          )}
+          </section>
 
-          {activeSectionId === "experience" && (
-            <div className="experience" role="tabpanel">
-              {EXPERIENCE.map((item) => (
-                <article className="xp-item" key={`${item.org}-${item.range}`}>
-                  <div className="xp-time">{item.range}</div>
-                  <div className="xp-body">
-                    <h3>{item.org}</h3>
-                    <p className="xp-title">{item.title}</p>
-                    {item.body === "Relevant Coursework:" ? (
-                      <h3 className="tag-group-heading">{item.body}</h3>
-                    ) : (
-                      item.body && <p>{item.body}</p>
-                    )}
-                    <div className="tags">
-                      {item.tags.map((tag) => (
-                        <span key={tag} tabIndex={0}>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          )}
-
-          {activeSectionId === "education" && (
-            <div className="experience education" role="tabpanel">
+          <section id="education" className="scroll-section" aria-labelledby="education-title">
+            <header className="section-header">
+              <span className="section-kicker">EDUCATION</span>
+              <h2 id="education-title" className="section-title" data-title="EDUCATION">EDUCATION</h2>
+            </header>
+            <div className="experience education" >
               {EDUCATION.map((item) => (
                 <article className="xp-item" key={`${item.org}-${item.range}`}>
                   <div className="xp-time">{item.range}</div>
@@ -1178,67 +1261,27 @@ function App() {
                 </article>
               ))}
             </div>
-          )}
+          </section>
 
-          {activeSectionId === "projects" && (
-            <div className="projects" role="tabpanel">
-              {PROJECTS.map((project) => (
-                <article className="project" key={project.name}>
-                  {project.link ? (
-                    <a
-                      className="project-thumb link"
-                      href={project.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`${project.name} link`}
-                    >
-                      {project.image && (
-                        <img
-                          src={project.image}
-                          alt={project.name}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      )}
-                      <span className="project-date">{project.date}</span>
-                      <span className="project-cta">View Project</span>
-                    </a>
-                  ) : (
-                    <div className="project-thumb" aria-hidden="true">
-                      {project.image && (
-                        <img
-                          src={project.image}
-                          alt={project.name}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      )}
-                      <span className="project-date">{project.date}</span>
-                    </div>
-                  )}
-                  <div className="project-body">
-                    <h4 className="project-title-row">
-                      {project.link ? (
-                        <a href={project.link} target="_blank" rel="noreferrer">
-                          {project.name}
-                        </a>
-                      ) : (
-                        project.name
-                      )}
-                      {project.video ? (
-                        <button
-                          type="button"
-                          className="project-video-button"
-                          aria-label={`Open demo video for ${project.name}`}
-                          onClick={() => setActiveProjectVideo(project)}
-                        >
-                          <i className="bi bi-play-circle-fill" aria-hidden="true" />
-                        </button>
-                      ) : null}
-                    </h4>
-                    <p>{project.body}</p>
+          <section id="experience" className="scroll-section" aria-labelledby="experience-title">
+            <header className="section-header">
+              <span className="section-kicker">EXPERIENCE</span>
+              <h2 id="experience-title" className="section-title" data-title="EXPERIENCE">EXPERIENCE</h2>
+            </header>
+            <div className="experience" >
+              {EXPERIENCE.map((item) => (
+                <article className="xp-item" key={`${item.org}-${item.range}`}>
+                  <div className="xp-time">{item.range}</div>
+                  <div className="xp-body">
+                    <h3>{item.org}</h3>
+                    <p className="xp-title">{item.title}</p>
+                    {item.body === "Relevant Coursework:" ? (
+                      <h3 className="tag-group-heading">{item.body}</h3>
+                    ) : (
+                      item.body && <p>{item.body}</p>
+                    )}
                     <div className="tags">
-                      {project.tags.map((tag) => (
+                      {item.tags.map((tag) => (
                         <span key={tag} tabIndex={0}>
                           {tag}
                         </span>
@@ -1248,14 +1291,56 @@ function App() {
                 </article>
               ))}
             </div>
-          )}
+          </section>
 
-          {activeSectionId === "contact" && (
-            <div className="contact" role="tabpanel">
-              <h4 className="summary">
-                Open to opportunities in Cloud Engineering, Systems, and
-                DevOps. Feel free to reach out.
-              </h4>
+          <section id="projects" className="scroll-section" aria-labelledby="projects-title">
+            <header className="section-header">
+              <span className="section-kicker">PROJECTS</span>
+              <h2 id="projects-title" className="section-title" data-title="PROJECTS">PROJECTS</h2>
+            </header>
+            <div className="projects case-studies" >
+              <p className="projects-intro">Selected work across full-stack applications, systems programming, and interactive experiences.</p>
+              {PROJECTS.map((project, index) => (
+                <article className="case-study" key={project.name} style={{ "--project-layer": index + 1 }}>
+                  <div className="case-study-meta">
+                    <CodeLabel text={`${String(index + 1).padStart(2, "0")} / ${project.category.toUpperCase()}`} />
+                    <time dateTime={new Date(project.date).toISOString().slice(0, 10)}>{project.date}</time>
+                  </div>
+                  <div className="case-study-layout">
+                    <div className="case-study-copy">
+                      <h3><a href={project.link} target="_blank" rel="noreferrer">{project.name}<span aria-hidden="true"> ↗</span></a></h3>
+                      <p className="case-study-headline">{project.headline}</p>
+                      <div className="case-study-narrative">
+                        <p>{project.body}</p>
+                      </div>
+                      {project.video && project.name !== "CorePanel" && (
+                        <button type="button" className="case-study-demo" onClick={() => setActiveProjectVideo(project)}>
+                          <span aria-hidden="true">▷</span> Watch walkthrough
+                        </button>
+                      )}
+                    </div>
+                    <a className="case-study-image" href={project.link} target="_blank" rel="noreferrer" aria-label={`View ${project.name}`}>
+                      <img src={project.image} alt={`${project.name} project preview`} loading="lazy" decoding="async" />
+                      <span>Explore project ↗</span>
+                    </a>
+                  </div>
+                  <div className="case-study-tags" aria-label="Technologies">
+                    {project.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section id="contact" className="scroll-section" aria-labelledby="contact-title">
+            <header className="section-header">
+              <span className="section-kicker">CONTACT</span>
+              <h2 id="contact-title" className="section-title" data-title="CONTACT">CONTACT</h2>
+            </header>
+            <div className="contact" >
+              <p className="summary contact-intro">
+                Have an opportunity or a project in mind? Let&apos;s connect.
+              </p>
               <div className="contact-card">
                 {CONTACT.map((item) => (
                   <div key={item.label} className="contact-row">
@@ -1287,56 +1372,9 @@ function App() {
                   </a>
                 </div>
               </div>
-              <form
-                className="contact-form"
-                action="mailto:leonfloresbrandon@gmail.com"
-                method="post"
-                encType="text/plain"
-                onSubmit={handleContactSubmit}
-              >
-                <input
-                  id="contact-name"
-                  name="name"
-                  type="text"
-                  placeholder="Your name"
-                  required
-                  minLength={2}
-                />
-
-                <input
-                  id="contact-email"
-                  name="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  required
-                />
-
-                <textarea
-                  id="contact-message"
-                  name="message"
-                  rows="5"
-                  placeholder="Enter your message"
-                  required
-                  minLength={10}
-                />
-
-                <div className="hp-field" aria-hidden="true">
-                  <input
-                    id="contact-company"
-                    name="company"
-                    type="text"
-                    tabIndex="-1"
-                    autoComplete="off"
-                    placeholder="Leave this empty"
-                  />
-                </div>
-
-                <button type="submit" className="secondary-button">
-                  Send Message
-                </button>
-              </form>
             </div>
-          )}
+          </section>
+
         </section>
       </main>
       {activeProjectVideo ? (
