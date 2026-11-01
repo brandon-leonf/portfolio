@@ -275,10 +275,11 @@ function App() {
   const { pathname } = useLocation();
   const [showEntrance, setShowEntrance] = useState(() => window.location.pathname === "/" && !window.location.hash);
   useEffect(() => {
-    if (!showEntrance) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = previous; };
+    // Prerendered HTML may contain the entrance screen's temporary scroll lock.
+    // Always release that lock when the intro closes rather than restoring it.
+    if (showEntrance) document.body.style.overflow = "hidden";
+    else document.body.style.removeProperty("overflow");
+    return () => { document.body.style.removeProperty("overflow"); };
   }, [showEntrance]);
   const navigate = useNavigate();
   const logoClickTimer = useRef(null);

@@ -99,6 +99,8 @@ try {
       { timeout: 10000 },
     );
 
+    // Save the usable page, not the transient entrance overlay or its scroll lock.
+    await page.waitForSelector(".entrance-overlay", { hidden: true, timeout: 15000 });
     const html = await page.content();
     const outputPath = outputPathForRoute(route);
     await fs.mkdir(path.dirname(outputPath), { recursive: true });
@@ -106,6 +108,29 @@ try {
     await page.close();
     console.log(`Prerendered ${route} -> ${path.relative(PROJECT_ROOT, outputPath)}`);
   }
+
+  // Regression check against the saved production HTML: the intro must release
+  // scrolling on a touch viewport as well as during the initial client render.
+  const mobile = await browser.newPage();
+  await mobile.setViewport({ width: 375, height: 812, isMobile: true, hasTouch: true });
+  await mobile.goto(`http://${HOST}:${PORT}/`, { waitUntil: "networkidle0" });
+  await mobile.waitForSelector(".entrance-overlay", { hidden: true, timeout: 15000 });
+  const client = await mobile.createCDPSession();
+  await client.send("Input.dispatchTouchEvent", {
+    type: "touchStart", touchPoints: [{ x: 180, y: 650 }],
+  });
+  for (const y of [570, 490, 410, 330, 250]) {
+    await client.send("Input.dispatchTouchEvent", {
+      type: "touchMove", touchPoints: [{ x: 180, y }],
+    });
+    await new Promise((resolve) => setTimeout(resolve, 40));
+  }
+  await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await mobile.waitForFunction(() => window.scrollY > 100, { timeout: 5000 });
+  const unlocked = await mobile.evaluate(() => getComputedStyle(document.body).overflow !== "hidden");
+  if (!unlocked) throw new Error("Entrance left mobile scrolling locked");
+  await mobile.close();
+  console.log("Verified mobile touch scrolling after the entrance closes.");
 } finally {
   await browser.close();
   await new Promise((resolve, reject) => {
