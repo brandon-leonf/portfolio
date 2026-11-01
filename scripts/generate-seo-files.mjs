@@ -2,7 +2,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const SITE_URL = (process.env.VITE_SITE_URL || "https://bleonflores1.com").replace(/\/$/, "");
-const ROUTES = ["/", "/about", "/experience", "/education", "/projects", "/contact"];
+// All section URLs display the same scrolling page; index its canonical URL.
+const ROUTES = ["/"];
 const OUTPUT_DIR = path.resolve("public");
 
 function routeUrl(route) {

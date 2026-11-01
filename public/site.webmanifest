@@ -1,11 +1,11 @@
 {
   "name": "Brandon Leon Portfolio",
   "short_name": "Brandon Portfolio",
-  "description": "Portfolio website for Brandon Leon.",
+  "description": "Brandon Leon — senior Information Technology student at NJIT focused on Software Development and Networking.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#050505",
+  "background_color": "#f7f7f7",
+  "theme_color": "#0B1526",
   "icons": [
     {
       "src": "/logo.png",

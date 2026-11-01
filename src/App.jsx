@@ -36,44 +36,38 @@ const NAV_LABELS = ROUTES.reduce((acc, section) => {
 const ROUTE_META = {
   "/": {
     id: "about",
-    title: "Brandon Leon | Developer Portfolio",
-    description:
-      "Portfolio of Brandon Leon, an NJIT IT student focused on Linux systems, web infrastructure, performance optimization, and reliable deployments.",
+    title: "Brandon Leon | Software Development & Networking Portfolio",
+    description: "Brandon Leon is a senior Information Technology student at NJIT focused on Software Development and Networking. Explore his projects, skills, and experience.",
   },
   "/about": {
     id: "about",
-    title: "About | Brandon Leon",
-    description:
-      "Learn about Brandon Leon's background, focus areas, and technical skills in web development and software engineering.",
+    title: "About Brandon Leon | Software Development & Networking",
+    description: "Meet Brandon Leon, a senior Information Technology student at NJIT in Red Bank, New Jersey, focused on Software Development and Networking.",
   },
   "/experience": {
     id: "experience",
-    title: "Experience | Brandon Leon",
-    description:
-      "Professional experience of Brandon Leon across web development and design roles.",
+    title: "Web Development Experience | Brandon Leon",
+    description: "Explore Brandon Leon's web development and design experience at Industry Media and Smart Marketing, including WordPress, performance, SEO, HTML, and CSS.",
   },
   "/education": {
     id: "education",
-    title: "Education | Brandon Leon",
-    description:
-      "Academic background of Brandon Leon in Information Technology and Computer Science.",
+    title: "Information Technology Education | Brandon Leon",
+    description: "Brandon Leon is pursuing a B.S. in Information Technology at NJIT and holds an Associate's in Computer Science from Brookdale Community College.",
   },
   "/projects": {
     id: "projects",
-    title: "Projects | Brandon Leon",
-    description:
-      "Explore software and game development projects by Brandon Leon, including compilers and Unity-based builds.",
+    title: "Software & Game Development Projects | Brandon Leon",
+    description: "Explore Brandon Leon's CorePanel business dashboard, Mini C-Like language implementation in C++, and Unity games Arcade Pong and Arkanoid.",
   },
   "/contact": {
     id: "contact",
-    title: "Contact | Brandon Leon",
-    description:
-      "Contact Brandon Leon about internships and entry-level opportunities in cloud, systems, and web infrastructure.",
+    title: "Contact Brandon Leon | Software Development & Networking",
+    description: "Connect with Brandon Leon in Red Bank, New Jersey, about projects and opportunities. Find his email, GitHub, and LinkedIn contact details.",
   },
   "/404": {
     id: "notfound",
-    title: "404 | Page Not Found",
-    description: "The requested page could not be found.",
+    title: "Page Not Found | Brandon Leon",
+    description: "This page could not be found. Visit Brandon Leon's portfolio for projects, experience, education, and contact details.",
     robots: "noindex,nofollow",
   },
 };
@@ -230,7 +224,13 @@ function buildSchema(pathname, canonicalUrl) {
     name: "Brandon Leon",
     url: SITE_URL,
     email: "mailto:leonfloresbrandon@gmail.com",
-    jobTitle: "Web Developer",
+    "@id": `${SITE_URL}/#person`,
+    description: "Senior Information Technology student at the New Jersey Institute of Technology, focused on Software Development and Networking.",
+    jobTitle: "Web Developer / Web Designer",
+    affiliation: { "@type": "CollegeOrUniversity", name: "New Jersey Institute of Technology" },
+    alumniOf: { "@type": "CollegeOrUniversity", name: "Brookdale Community College" },
+    address: { "@type": "PostalAddress", addressLocality: "Red Bank", addressRegion: "NJ", addressCountry: "US" },
+    knowsAbout: ["Software Development", "Full-Stack Applications", "Mobile Development", "Backend Development", "Database Systems", "Networking", "Linux"],
     sameAs: [
       "https://github.com/brandon-leonf",
       "https://www.linkedin.com/in/brandonleonflores",
@@ -240,8 +240,11 @@ function buildSchema(pathname, canonicalUrl) {
   const webSiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
     name: "Brandon Leon Portfolio",
+    description: ROUTE_META["/"].description,
     url: SITE_URL,
+    inLanguage: "en-US",
     sameAs: [
       "https://github.com/brandon-leonf",
       "https://www.linkedin.com/in/brandonleonflores",
@@ -252,7 +255,10 @@ function buildSchema(pathname, canonicalUrl) {
     "@context": "https://schema.org",
     "@type": routeMeta.id === "contact" ? "ContactPage" : "WebPage",
     name: pageName,
+    description: routeMeta.description,
     url: canonicalUrl,
+    inLanguage: "en-US",
+    about: { "@id": `${SITE_URL}/#person` },
     isPartOf: {
       "@type": "WebSite",
       name: "Brandon Leon Portfolio",
@@ -355,7 +361,7 @@ function App() {
   const activeRouteMeta = ROUTE_META[seoPath];
   const activeSectionId = activeRouteMeta.id;
   const [scrollSection, setScrollSection] = useState("about");
-  const canonicalUrl = `${SITE_URL}${seoPath === "/" ? "/" : seoPath}`;
+  const canonicalUrl = isKnownRoute ? `${SITE_URL}/` : `${SITE_URL}/404`;
 
   useEffect(() => {
     const title = activeRouteMeta.title;
@@ -368,6 +374,8 @@ function App() {
     upsertMeta('meta[property="og:title"]', "property", "og:title", title);
     upsertMeta('meta[property="og:description"]', "property", "og:description", description);
     upsertMeta('meta[property="og:type"]', "property", "og:type", "website");
+    upsertMeta('meta[property="og:site_name"]', "property", "og:site_name", "Brandon Leon Portfolio");
+    upsertMeta('meta[property="og:locale"]', "property", "og:locale", "en_US");
     upsertMeta('meta[property="og:url"]', "property", "og:url", canonicalUrl);
     upsertMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary");
     upsertMeta('meta[name="twitter:title"]', "name", "twitter:title", title);
