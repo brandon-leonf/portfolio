@@ -99,8 +99,7 @@ try {
       { timeout: 10000 },
     );
 
-    // Save the usable page, not the transient entrance overlay or its scroll lock.
-    await page.waitForSelector(".entrance-overlay", { hidden: true, timeout: 15000 });
+    await page.waitForSelector("main.resume", { visible: true });
     const html = await page.content();
     const outputPath = outputPathForRoute(route);
     await fs.mkdir(path.dirname(outputPath), { recursive: true });
@@ -109,12 +108,11 @@ try {
     console.log(`Prerendered ${route} -> ${path.relative(PROJECT_ROOT, outputPath)}`);
   }
 
-  // Regression check against the saved production HTML: the intro must release
-  // scrolling on a touch viewport as well as during the initial client render.
+  // Verify the homepage can be scrolled by touch after loading the saved production HTML.
   const mobile = await browser.newPage();
   await mobile.setViewport({ width: 375, height: 812, isMobile: true, hasTouch: true });
   await mobile.goto(`http://${HOST}:${PORT}/`, { waitUntil: "networkidle0" });
-  await mobile.waitForSelector(".entrance-overlay", { hidden: true, timeout: 15000 });
+  await mobile.waitForSelector("main.resume", { visible: true });
   const client = await mobile.createCDPSession();
   await client.send("Input.dispatchTouchEvent", {
     type: "touchStart", touchPoints: [{ x: 180, y: 650 }],
@@ -128,9 +126,9 @@ try {
   await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   await mobile.waitForFunction(() => window.scrollY > 100, { timeout: 5000 });
   const unlocked = await mobile.evaluate(() => getComputedStyle(document.body).overflow !== "hidden");
-  if (!unlocked) throw new Error("Entrance left mobile scrolling locked");
+  if (!unlocked) throw new Error("Homepage body scrolling is locked");
   await mobile.close();
-  console.log("Verified mobile touch scrolling after the entrance closes.");
+  console.log("Verified mobile touch scrolling on the homepage.");
 } finally {
   await browser.close();
   await new Promise((resolve, reject) => {
