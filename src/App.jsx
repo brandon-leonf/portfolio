@@ -1,7 +1,6 @@
 import "./App.css";
 import AboutTitle from "./AboutTitle";
 import CodeLabel from "./CodeLabel";
-import LogoCover from "./LogoCover";
 import MobileParticleLogo from "./MobileParticleLogo";
 import ProfileParticles from "./ProfileParticles";
 import ParticlePortrait from "./ParticlePortrait";
@@ -284,14 +283,6 @@ function darkModeForCurrentTime() {
 
 function App() {
   const { pathname } = useLocation();
-  const [showEntrance, setShowEntrance] = useState(() => window.location.pathname === "/" && !window.location.hash);
-  useEffect(() => {
-    // Prerendered HTML may contain the entrance screen's temporary scroll lock.
-    // Always release that lock when the intro closes rather than restoring it.
-    if (showEntrance) document.body.style.overflow = "hidden";
-    else document.body.style.removeProperty("overflow");
-    return () => { document.body.style.removeProperty("overflow"); };
-  }, [showEntrance]);
   const navigate = useNavigate();
   const logoClickTimer = useRef(null);
   const manualTheme = useRef(false);
@@ -1060,8 +1051,7 @@ function App() {
           <div className="video-background__overlay" />
         </div>
       )}
-      {showEntrance && <LogoCover onComplete={() => setShowEntrance(false)} />}
-      <main className="resume" inert={showEntrance}>
+      <main className="resume">
           <div className="electric-divider" aria-hidden="true">
             {Array.from({ length: 20 }, (_, index) => (
               <span key={index} style={{ "--segment": index }} />
